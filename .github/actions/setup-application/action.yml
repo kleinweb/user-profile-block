@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+---
+name: Set up application
+
+inputs:
+  environment:
+    description: 'Target environment. One of: "production", "development", "staging".'
+    default: "development"
+  github_token:
+    description: "GitHub API token"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ inputs.github_token }}

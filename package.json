@@ -1,0 +1,61 @@
+{
+  "name": "@kleinweb/user-profile-block",
+  "type": "module",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kleinweb/user-profile-block.git"
+  },
+  "author": "Klein College of Media and Communication <kleinweb@temple.edu>",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/kleinweb/user-profile-block/issues"
+  },
+  "homepage": "https://github.com/kleinweb/user-profile-block#readme",
+  "description": "",
+  "packageManager": "pnpm@10.18.0",
+  "dependencies": {
+    "@wordpress/api-fetch": "^7.0.0",
+    "@wordpress/components": "^28.0.0",
+    "@wordpress/compose": "^7.0.0",
+    "@wordpress/core-data": "^7.0.0",
+    "@wordpress/data": "^10.0.0",
+    "@wordpress/edit-post": "^8.0.0",
+    "@wordpress/element": "^6.0.0",
+    "@wordpress/i18n": "^5.0.0",
+    "@wordpress/plugins": "^7.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "simple-icons": "^16.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^22.7.5",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@types/wordpress__block-editor": "^14.21.2",
+    "@types/wordpress__blocks": "^12.5.18",
+    "@types/wordpress__edit-post": "^8.4.2",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@wordpress/block-editor": "^15.9.0",
+    "@wordpress/blocks": "^15.9.0",
+    "jsdom": "^27.3.0",
+    "laravel-vite-plugin": "^1.0.5",
+    "rollup-plugin-external-globals": "^0.13.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-manifest-sri": "^0.2.0",
+    "vitest": "^4.0.16"
+  }
+}

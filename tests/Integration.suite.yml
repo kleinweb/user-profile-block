@@ -1,0 +1,16 @@
+actor: WpunitTester
+bootstrap: _bootstrap.php
+modules:
+  enabled:
+    - lucatume\WPBrowser\Module\WPLoader:
+        wpRootFolder: "%WP_ROOT_FOLDER%"
+        dbUrl: mysql://%TEST_DB_USER%:%TEST_DB_PASSWORD%@%TEST_DB_HOST%/%TEST_DB_NAME%
+        tablePrefix: "%TEST_TABLE_PREFIX%"
+        domain: "%WP_DOMAIN%"
+        adminEmail: kleinweb@temple.edu
+        title: "User Profile Block Tests"
+        plugins:
+          - user-profile-block/user-profile-block.php
+        activatePlugins:
+          - user-profile-block/user-profile-block.php
+    - Asserts

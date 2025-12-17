@@ -1,0 +1,29 @@
+{
+  "resources/blocks/user-profile/index.tsx": {
+    "file": "assets/block-user-profile-BQ_Py2bL.js",
+    "name": "block-user-profile",
+    "src": "resources/blocks/user-profile/index.tsx",
+    "isEntry": true
+  },
+  "resources/js/editor/index.tsx": {
+    "file": "assets/editor-DyzXIxMQ.js",
+    "name": "editor",
+    "src": "resources/js/editor/index.tsx",
+    "isEntry": true
+  },
+  "resources/js/frontend/index.ts": {
+    "file": "assets/frontend-Dz-4ZAFz.js",
+    "name": "frontend",
+    "src": "resources/js/frontend/index.ts",
+    "isEntry": true,
+    "css": [
+      "assets/frontend-tn0RQdqM.css"
+    ]
+  },
+  "resources/js/settings/index.tsx": {
+    "file": "assets/settings--Es__yPY.js",
+    "name": "settings",
+    "src": "resources/js/settings/index.tsx",
+    "isEntry": true
+  }
+}

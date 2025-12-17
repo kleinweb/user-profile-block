@@ -1,0 +1,35 @@
+---
+# yamllint disable rule:comments rule:line-length
+
+name: user-profile-block
+type: wordpress
+docroot: wp
+php_version: '8.3'
+webserver_type: nginx-fpm
+database:
+  type: mariadb
+  version: '10.11'
+
+hooks:
+  post-start:
+    - exec: |
+        # Install WordPress if not present
+        if [ ! -f wp/wp-config.php ]; then
+          wp core download --path=wp
+          wp config create --path=wp --dbname=db --dbuser=db --dbpass=db --dbhost=db
+          wp core install --path=wp --url="https://user-profile-block.ddev.site" --title="User Profile Block Dev" --admin_user=kleinweb --admin_password=password --admin_email=kleinweb@temple.edu
+          ln -sf /var/www/html wp/wp-content/plugins/user-profile-block
+          wp plugin activate user-profile-block --path=wp
+        fi
+    - exec: composer install
+    - exec: pnpm install
+
+web_extra_exposed_ports:
+  - name: vite
+    container_port: 5173
+    http_port: 5172
+    https_port: 5173
+
+web_environment:
+  - XDEBUG_MODE=coverage,debug
+  - WP_TESTS_DIR=/var/www/html/wordpress-tests-lib

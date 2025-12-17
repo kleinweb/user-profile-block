@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+---
+name: Build
+description: "Build the things"
+
+inputs:
+  prj_root:
+    description: "Compatibility with the $PRJ_ROOT environment variable."
+    default: ${{ github.workspace }}
+
+runs:
+  using: composite
+  steps:
+    - run: biome check $GITHUB_WORKSPACE
+      shell: bash
+
+    - run: nix run github:kleinweb/beams#php-lint-project
+      shell: bash
+
+    - run: composer php-cs-fixer -- check
+      shell: bash
+
+    - run: composer phpcs
+      shell: bash
+
+    - run: composer phpstan
+      shell: bash

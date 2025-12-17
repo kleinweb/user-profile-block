@@ -1,0 +1,29 @@
+import {registerPlugin} from '@wordpress/plugins'
+import {MetaSidebar} from './MetaSidebar'
+
+declare const pluginNameEditor: {
+  metaConfig: MetaConfig
+  restNonce: string
+}
+
+export interface MetaFieldConfig {
+  key: string
+  label: string
+  description: string
+  type: string
+  inputType: string
+  options?: Record<string, string>
+  default: unknown
+}
+
+export interface MetaConfig {
+  post?: Record<string, Record<string, MetaFieldConfig>>
+  term?: Record<string, Record<string, MetaFieldConfig>>
+  user?: Record<string, Record<string, MetaFieldConfig>>
+}
+
+// Register the plugin for the post editor sidebar
+registerPlugin('plugin-name-meta-sidebar', {
+  render: () => <MetaSidebar config={pluginNameEditor.metaConfig} />,
+  icon: 'admin-generic',
+})

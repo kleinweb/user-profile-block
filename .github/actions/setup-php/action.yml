@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+---
+name: Setup PHP
+description: "Setup and install Composer dependencies"
+
+inputs:
+  extra_install_args:
+    description: "Additional arguments to pass to `composer install`."
+    default: ""
+  working_directory:
+    description: "Working directory containing a `composer.json` and `composer.lock`."
+    default: "."
+
+runs:
+  using: composite
+  steps:
+    - name: "Get Composer cache directory"
+      id: composer-cache
+      working-directory: ${{ inputs.working_directory }}
+      run: |
+        echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: "Prepare Composer dependency cache"
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
+    - name: "Configure GitHub auth for Composer"
+      working-directory: ${{ inputs.working_directory }}
+      run: composer config github-oauth.github.com ${{ inputs.github_token }}
+      shell: bash
+
+    - name: "Install Composer dependencies"
+      working-directory: ${{ inputs.working_directory }}
+      run: composer install --no-progress ${{ inputs.extra_install_args }}
+      shell: bash

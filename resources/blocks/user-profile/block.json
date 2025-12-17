@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "kleinweb/user-profile",
+  "version": "1.0.0",
+  "title": "User Profile",
+  "keywords": ["social", "connect", "links", "author", "user", "profile"],
+  "icon": "businessperson",
+  "category": "kleinweb",
+  "description": "Display user profile cards with social media links.",
+  "usesContext": ["postId", "postType"],
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "align": ["wide", "full"],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    }
+  },
+  "attributes": {
+    "selectedUserIds": {
+      "type": "array",
+      "default": []
+    },
+    "usePostAuthor": {
+      "type": "boolean",
+      "default": true
+    },
+    "showLabels": {
+      "type": "boolean",
+      "default": false
+    },
+    "showAvatar": {
+      "type": "boolean",
+      "default": true
+    },
+    "showName": {
+      "type": "boolean",
+      "default": true
+    },
+    "showBio": {
+      "type": "boolean",
+      "default": false
+    },
+    "iconSize": {
+      "type": "string",
+      "default": "medium",
+      "enum": ["small", "medium", "large"]
+    }
+  },
+  "textdomain": "user-profile-block"
+}

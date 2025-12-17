@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
+---
+name: Deploy
+description: Deploy with rsync to an environment
+
+# inputs:
+
+runs:
+  using: composite
+  steps:
+    steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p ${{ vars.TARGET_PORT }} -H ${{ vars.TARGET_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_ed25519
+
+      - name: Rsync files to host
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete –-exclude-from=".deployignore"
+          path: /
+          remote_path: ~/public
+          remote_host: ${{ vars.TARGET_HOST }}
+          remote_port: ${{ vars.TARGET_PORT }}
+          remote_user: ${{ vars.TARGET_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: "Post-deploy: Clear Kinsta cache"
+        run: |
+          ssh ${{ vars.TARGET_USER }}@${{ vars.TARGET_HOST }} -p ${{ vars.TARGET_PORT }} \
+          'curl https://${{ vars.TARGET_DOMAIN }}/kinsta-clear-cache-all'

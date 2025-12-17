@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+# <https://github.com/marketplace/actions/install-ssh-key>
+---
+name: "Deploy"
+
+"on":
+  # push:
+  #   # FIXME: this is not really what we want
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+concurrency:
+  group: production
+  cancel-in-progress: true
+
+env:
+  SRC_DIR: ${{ github.workspace }}
+  REMOTE_LOGIN: user-profile-block
+  REMOTE_HOST: "35.236.219.140"
+  REMOTE_PORT: 49032
+  REMOTE_DIR: public
+  # FIXME: make reusable
+  PRJ_ROOT: ${{ github.workspace }}
+  PRJ_CONFIG_HOME: "${{ github.workspace }}/.config"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # FIXME: offload composite actions
+      - uses: ./.github/actions/build
+        with:
+          cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: user-profile-block-built
+          path: .
+          if-no-files-found: error
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: production
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: user-profile-block-built
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2.7.0
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          config: |
+            Host production-target
+              HostName ${{ env.REMOTE_HOST }}
+              User ${{ env.REMOTE_LOGIN }}
+              Port ${{ env.REMOTE_PORT }}
+
+      - name: Prepare target environment as Git remote
+        run: |
+          git remote add production ssh://production-target/private/user-profile-block.git
+          git fetch production
+
+      - name: Sync Composer vendor directory to remote
+        run: rsync -av --delete ./vendor/ production-target:private/user-profile-block.git/vendor/
+
+      - name: Replace .gitignore with .deployignore
+        run: mv .deployignore .gitignore
+
+      - name: Commit built changes
+        run: |
+          git checkout -b '${{ github.ref }}-built'
+          git add .
+          git commit -m 'build: ${{ github.ref }}'
+
+      - name: Deploy files to target environment
+        run: |
+          git push --set-upstream production main
+          # FIXME: in post-receive hook:
+          ln -sf ~/private/user-profile-block.git/vendor ~/public/vendor

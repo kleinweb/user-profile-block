@@ -1,0 +1,69 @@
+# SPDX-FileCopyrightText: 2024-2025 Temple University <kleinweb@temple.edu>
+# SPDX-License-Identifier: CC0-1.0
+
+/wp-content/themes/*
+/wp-content/plugins/*
+/wp-content/mu-plugins/*/
+/wp-content/cache
+/wp-content/upgrade
+/wp-content/uploads
+
+# WordPress Core
+/wp-admin/
+/wp-content/languages
+/wp-includes/
+/license.txt
+/readme.html
+/wp-*.php
+/xmlrpc.php
+# These will be modified by core during updates:
+/index.php
+/wp-content/index.php
+/wp-content/plugins/index.php
+/wp-content/themes/index.php
+
+# WordPress Core in a subdirectory:
+/wp/
+
+# Allow wp-config.php; secrets offloaded to environment
+!/wp-config.php
+
+# Data/logs/testing
+.data
+*.log
+*.sql
+/test-results/
+/playwright-report/
+/blob-report/
+
+# Secrets
+auth.json
+.env
+.env.*
+!.env.example
+.ssh
+*.key
+
+# Dependencies
+node_modules
+vendor
+
+# Context-specific
+*.cache
+*.local
+*.local.*
+*.local.*
+!*.local*.example
+.direnv
+.pre-commit-config.yaml
+
+# Plugin: Query Monitor
+# This is a symbolic link whose path will vary per-environment.
+/wp-content/db.php
+
+# Build artifacts
+hot
+result
+
+# Editor
+/.idea/
