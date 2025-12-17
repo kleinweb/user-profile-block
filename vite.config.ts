@@ -2,10 +2,37 @@ import fs from 'node:fs'
 import {resolve} from 'node:path'
 import react from '@vitejs/plugin-react'
 import externalGlobals from 'rollup-plugin-external-globals'
-import {defineConfig} from 'vite'
+import {defineConfig, type Plugin} from 'vite'
+
+// WordPress dependencies - externalized in production to use wp.* globals
+// In dev mode, these are resolved from node_modules
+const wpExternals = [
+  '@wordpress/blocks',
+  '@wordpress/block-editor',
+  '@wordpress/components',
+  '@wordpress/compose',
+  '@wordpress/core-data',
+  '@wordpress/data',
+  '@wordpress/date',
+  '@wordpress/element',
+  '@wordpress/i18n',
+  '@wordpress/api-fetch',
+  '@wordpress/plugins',
+  '@wordpress/edit-post',
+]
+
+// Map @wordpress/* packages to wp.* globals for production builds
+const wpGlobals = Object.fromEntries(
+  wpExternals.map(pkg => {
+    const name = pkg
+      .replace('@wordpress/', '')
+      .replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())
+    return [pkg, `wp.${name}`]
+  }),
+)
 
 // Write hot file for PHP to detect dev server
-const hotFile = () => ({
+const hotFile = (): Plugin => ({
   name: 'hot-file',
   configureServer(server) {
     const hotPath = resolve(__dirname, 'public/build/hot')
@@ -39,33 +66,6 @@ const hotFile = () => ({
   },
 })
 
-// WordPress dependencies that should use wp.* globals
-const wpExternals = [
-  '@wordpress/blocks',
-  '@wordpress/block-editor',
-  '@wordpress/components',
-  '@wordpress/compose',
-  '@wordpress/core-data',
-  '@wordpress/data',
-  '@wordpress/date',
-  '@wordpress/element',
-  '@wordpress/i18n',
-  '@wordpress/api-fetch',
-  '@wordpress/plugins',
-  '@wordpress/edit-post',
-]
-
-// Map @wordpress/* packages to wp.* globals
-const wpGlobals = Object.fromEntries(
-  wpExternals.map((pkg) => {
-    // @wordpress/block-editor -> wp.blockEditor
-    const name = pkg
-      .replace('@wordpress/', '')
-      .replace(/-([a-z])/g, (_, c) => c.toUpperCase())
-    return [pkg, `wp.${name}`]
-  }),
-)
-
 export default defineConfig({
   plugins: [
     react({
@@ -85,7 +85,10 @@ export default defineConfig({
         settings: resolve(__dirname, 'resources/js/settings/index.tsx'),
         editor: resolve(__dirname, 'resources/js/editor/index.tsx'),
         frontend: resolve(__dirname, 'resources/js/frontend/index.ts'),
-        'block-user-profile': resolve(__dirname, 'resources/blocks/user-profile/index.tsx'),
+        'block-user-profile': resolve(
+          __dirname,
+          'resources/blocks/user-profile/index.tsx',
+        ),
       },
       external: [...wpExternals, 'react', 'react-dom'],
       plugins: [

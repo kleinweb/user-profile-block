@@ -27,8 +27,10 @@ final class MetaServiceProvider extends ServiceProvider implements Bootable
         'comment' => [],
     ];
 
+    /** @phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter -- required by interface */
     public function register(Container $container): void
     {
+        unset($container);
         $this->parseMetaAttributes();
     }
 
@@ -41,15 +43,7 @@ final class MetaServiceProvider extends ServiceProvider implements Bootable
     {
         foreach ($this->metaFields as $objectType => $fields) {
             foreach ($fields as $key => $meta) {
-                $registered = register_meta($objectType, $key, $meta->toArgs());
-
-                if (!$registered) {
-                    error_log(sprintf(
-                        'UserProfile: Failed to register %s meta key: %s',
-                        $objectType,
-                        $key,
-                    ));
-                }
+                register_meta($objectType, $key, $meta->toArgs());
             }
         }
     }

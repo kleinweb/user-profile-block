@@ -1,6 +1,6 @@
 import {registerBlockType} from '@wordpress/blocks'
-import {Edit} from './edit'
 import metadata from './block.json'
+import {Edit} from './edit'
 
 // @ts-expect-error - block.json types don't match strict BlockConfiguration
 registerBlockType(metadata.name, {

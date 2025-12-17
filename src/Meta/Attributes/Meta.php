@@ -42,6 +42,9 @@ final readonly class Meta
         public ?string $authCallback = null,
     ) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArgs(): array
     {
         $args = [
@@ -67,6 +70,9 @@ final readonly class Meta
         return $args;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getUiConfig(): array
     {
         return [
@@ -80,6 +86,9 @@ final readonly class Meta
         ];
     }
 
+    /**
+     * @return array{schema: array<string, mixed>}
+     */
     private function getRestSchema(): array
     {
         $schema = [

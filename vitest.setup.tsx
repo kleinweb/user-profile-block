@@ -48,11 +48,27 @@ vi.mock('@wordpress/block-editor', () => ({
 }))
 
 vi.mock('@wordpress/components', () => ({
-  Button: ({children, onClick}: {children: React.ReactNode; onClick?: () => void}) => (
-    <button onClick={onClick}>{children}</button>
+  Button: ({
+    children,
+    onClick,
+  }: {
+    children: React.ReactNode
+    onClick?: () => void
+  }) => (
+    <button type="button" onClick={onClick}>
+      {children}
+    </button>
   ),
-  PanelBody: ({children, title}: {children: React.ReactNode; title: string}) => (
-    <div data-testid="panel-body" data-title={title}>{children}</div>
+  PanelBody: ({
+    children,
+    title,
+  }: {
+    children: React.ReactNode
+    title: string
+  }) => (
+    <div data-testid="panel-body" data-title={title}>
+      {children}
+    </div>
   ),
   ToggleControl: ({
     label,
@@ -67,7 +83,7 @@ vi.mock('@wordpress/components', () => ({
       <input
         type="checkbox"
         checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
+        onChange={e => onChange(e.target.checked)}
       />
       {label}
     </label>
@@ -85,8 +101,8 @@ vi.mock('@wordpress/components', () => ({
   }) => (
     <label>
       {label}
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
-        {options.map((opt) => (
+      <select value={value} onChange={e => onChange(e.target.value)}>
+        {options.map(opt => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>

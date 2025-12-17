@@ -159,9 +159,7 @@ final class UserProfileTest extends TestCase
         Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
         Functions\expect('get_userdata')->with(1)->andReturn($user);
         Functions\expect('get_user_meta')
-            ->andReturnUsing(static function (int $userId, string $key) {
-                return $key === 'instagram_url' ? 'https://instagram.com/testuser' : '';
-            });
+            ->andReturnUsing(static fn (int $userId, string $key) => $key === 'instagram_url' ? 'https://instagram.com/testuser' : '');
         Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
         Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
 
@@ -218,7 +216,8 @@ final class UserProfileTest extends TestCase
         $wpBlock = $this->createWpBlock([]);
         $result = $this->block->render([
             'usePostAuthor' => true,
-            'selectedUserIds' => [1], // Same as post author
+            // Same as post author
+            'selectedUserIds' => [1],
             'showAvatar' => true,
             'showName' => true,
             'showBio' => false,
@@ -261,9 +260,7 @@ final class UserProfileTest extends TestCase
         Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
         Functions\expect('get_userdata')->with(1)->andReturn($user);
         Functions\expect('get_user_meta')
-            ->andReturnUsing(static function (int $userId, string $key) {
-                return $key === 'facebook_url' ? 'https://facebook.com/testuser' : '';
-            });
+            ->andReturnUsing(static fn (int $userId, string $key) => $key === 'facebook_url' ? 'https://facebook.com/testuser' : '');
         Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
         Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
 

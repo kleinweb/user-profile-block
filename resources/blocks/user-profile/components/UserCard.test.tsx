@@ -76,7 +76,9 @@ describe('UserCard', () => {
       />,
     )
 
-    expect(screen.queryByRole('img', {name: 'Test User'})).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('img', {name: 'Test User'}),
+    ).not.toBeInTheDocument()
   })
 
   it('renders bio when showBio is true and user has description', () => {
@@ -208,8 +210,10 @@ describe('UserCard', () => {
     )
 
     const links = screen.getAllByRole('link')
-    links.forEach((link) => {
-      expect(link).toHaveClass('wp-block-kleinweb-user-profile__social-link--large')
+    links.forEach(link => {
+      expect(link).toHaveClass(
+        'wp-block-kleinweb-user-profile__social-link--large',
+      )
     })
   })
 

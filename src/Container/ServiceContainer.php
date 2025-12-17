@@ -56,6 +56,7 @@ final class ServiceContainer
             }
         }
 
+        // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules
         flush_rewrite_rules();
     }
 
@@ -67,6 +68,7 @@ final class ServiceContainer
             }
         }
 
+        // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules
         flush_rewrite_rules();
     }
 

@@ -21,6 +21,7 @@ build:
 [doc: "Check for any lint or formatting issues on project files"]
 check:
   biome check {{prj-root}}
+  pnpm check
   nix run 'github:kleinweb/beams#php-lint-project'
   composer php-cs-fixer -- check
   composer phpcs

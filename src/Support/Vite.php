@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kleinweb\UserProfile\Support;
 
-use Kleinweb\UserProfile\PLUGIN_DIR;
-
 /**
  * Vite asset helper for loading built assets.
  */
@@ -36,6 +34,7 @@ final class Vite
         }
 
         $content = file_get_contents(\Kleinweb\UserProfile\PLUGIN_DIR . self::HOT_FILE);
+
         return $content !== false ? trim($content) : null;
     }
 
@@ -55,13 +54,16 @@ final class Vite
             return null;
         }
 
-        return plugins_url(self::BUILD_PATH . $manifest[$entry]['file'], \Kleinweb\UserProfile\PLUGIN_FILE);
+        $file = $manifest[$entry]['file'];
+
+        return plugins_url(self::BUILD_PATH . $file, \Kleinweb\UserProfile\PLUGIN_FILE);
     }
 
     /**
      * Get CSS files for an entry.
      *
      * @param string $entry The entry point
+     *
      * @return list<string>
      */
     public static function css(string $entry): array
@@ -75,8 +77,10 @@ final class Vite
             return [];
         }
 
+        $pluginFile = \Kleinweb\UserProfile\PLUGIN_FILE;
+
         return array_map(
-            static fn (string $file): string => plugins_url(self::BUILD_PATH . $file, \Kleinweb\UserProfile\PLUGIN_FILE),
+            static fn (string $file): string => plugins_url(self::BUILD_PATH . $file, $pluginFile),
             $manifest[$entry]['css'],
         );
     }
@@ -95,12 +99,14 @@ final class Vite
         $manifestPath = \Kleinweb\UserProfile\PLUGIN_DIR . self::MANIFEST_PATH;
         if (!file_exists($manifestPath)) {
             self::$manifest = [];
+
             return self::$manifest;
         }
 
         $content = file_get_contents($manifestPath);
         if ($content === false) {
             self::$manifest = [];
+
             return self::$manifest;
         }
 

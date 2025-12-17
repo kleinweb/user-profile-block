@@ -1,13 +1,13 @@
 import {
-  siInstagram,
-  siX,
-  siFacebook,
-  siTiktok,
-  siYoutube,
-  siThreads,
   siBluesky,
-  siSubstack,
+  siFacebook,
+  siInstagram,
   siMedium,
+  siSubstack,
+  siThreads,
+  siTiktok,
+  siX,
+  siYoutube,
 } from 'simple-icons'
 
 type Platform =
@@ -25,8 +25,7 @@ type Platform =
 interface SocialIconProps {
   platform: Platform
   url: string
-  showLabel: boolean
-  size: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large'
 }
 
 // LinkedIn SVG path (not in simple-icons due to trademark)
@@ -51,7 +50,7 @@ const PLATFORM_CONFIG: Record<Platform, IconConfig> = {
   medium_url: {path: siMedium.path, label: 'Medium'},
 }
 
-export function SocialIcon({platform, url, showLabel, size}: SocialIconProps) {
+export function SocialIcon({platform, url, size = 'medium'}: SocialIconProps) {
   const config = PLATFORM_CONFIG[platform]
   if (!config) return null
 
@@ -63,16 +62,18 @@ export function SocialIcon({platform, url, showLabel, size}: SocialIconProps) {
       className={`wp-block-kleinweb-user-profile__social-link wp-block-kleinweb-user-profile__social-link--${size}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={label}
     >
-      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <span className="wp-block-kleinweb-user-profile__social-label screen-reader-text">
+        {label}
+      </span>
+      <svg
+        role="img"
+        aria-label={label}
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <path d={path} />
       </svg>
-      {showLabel && (
-        <span className="wp-block-kleinweb-user-profile__social-label">
-          {label}
-        </span>
-      )}
     </a>
   )
 }

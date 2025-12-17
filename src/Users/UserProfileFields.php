@@ -145,13 +145,16 @@ final class UserProfileFields
         ?>
         <h2><?php esc_html_e('Social Media Profiles', 'user-profile-block'); ?></h2>
         <p class="description">
-            <?php esc_html_e('Enter your social media profile URLs. These will be displayed in the User Profile block.', 'user-profile-block'); ?>
+            <?php
+            // phpcs:ignore SlevomatCodingStandard.Files.LineLength.LineTooLong
+            esc_html_e('Enter your social media profile URLs. These will be displayed in the User Profile block.', 'user-profile-block');
+        ?>
         </p>
 
         <table class="form-table" role="presentation">
-            <?php foreach ($this->getMetaFields() as $meta): ?>
+            <?php foreach ($this->getMetaFields() as $meta) { ?>
                 <?php $this->renderField($user, $meta); ?>
-            <?php endforeach; ?>
+            <?php } ?>
         </table>
         <?php
     }
@@ -171,13 +174,16 @@ final class UserProfileFields
                 </label>
             </th>
             <td>
+                <?php
+                $placeholder = sprintf('https://%s.com/...', strtolower($meta->label));
+        ?>
                 <input
                     type="url"
                     name="<?php echo esc_attr($meta->key); ?>"
                     id="<?php echo esc_attr($fieldId); ?>"
                     value="<?php echo esc_attr((string) $value); ?>"
                     class="regular-text"
-                    placeholder="<?php echo esc_attr(sprintf('https://%s.com/...', strtolower($meta->label))); ?>"
+                    placeholder="<?php echo esc_attr($placeholder); ?>"
                 />
             </td>
         </tr>
@@ -193,15 +199,18 @@ final class UserProfileFields
             return;
         }
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by WordPress profile handler
         if (!isset($_POST['_wpnonce'])) {
             return;
         }
 
         foreach ($this->getMetaFields() as $meta) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by WordPress profile handler
             if (!isset($_POST[$meta->key])) {
                 continue;
             }
 
+            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by WordPress profile handler
             $value = sanitize_url(wp_unslash($_POST[$meta->key]));
 
             if ($value === '') {

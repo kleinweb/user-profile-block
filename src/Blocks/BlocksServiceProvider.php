@@ -103,9 +103,19 @@ final class BlocksServiceProvider extends ServiceProvider implements Bootable
 
     /**
      * Add a custom block category for this plugin.
+     *
+     * @param array<int, array{slug: string, title: string, icon?: string}> $categories
+     *
+     * @return array<int, array{slug: string, title: string, icon?: string}>
+     *
+     * @phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter -- required by filter signature
      */
-    public function registerBlockCategory(array $categories, WP_Block_Editor_Context $context): array
-    {
+    public function registerBlockCategory(
+        array $categories,
+        WP_Block_Editor_Context $context,
+    ): array {
+        unset($context);
+
         return array_merge(
             [
                 [
@@ -121,10 +131,13 @@ final class BlocksServiceProvider extends ServiceProvider implements Bootable
     /**
      * Register a block that has a PHP handler class.
      *
-     * JS handles the full block registration. PHP only adds the render callback.
+     * Uses block.json as the source of truth, adding PHP render callback.
+     *
+     * @param array{class: class-string, attribute: Block} $config
      */
     private function registerBlockWithHandler(string $blockName, array $config): void
     {
+        unset($blockName);
         $attribute = $config['attribute'];
         $instance = $this->container->get($config['class']);
         $renderMethod = $attribute->renderCallback ?? 'render';
@@ -133,10 +146,20 @@ final class BlocksServiceProvider extends ServiceProvider implements Bootable
             return;
         }
 
-        // Register with name only - JS provides the full block config
-        // We just need to add the server-side render callback
-        register_block_type($blockName, [
-            'render_callback' => [$instance, $renderMethod],
+        // Build path to block.json
+        $blockJsonPath = sprintf(
+            '%s/resources/blocks/%s/block.json',
+            \Kleinweb\UserProfile\PLUGIN_DIR,
+            $attribute->name,
+        );
+
+        if (!file_exists($blockJsonPath)) {
+            return;
+        }
+
+        // Register using block.json (for styles) with PHP render callback
+        register_block_type($blockJsonPath, [
+            'render_callback' => $instance->$renderMethod(...),
             'editor_script_handles' => ['kleinweb-user-profile-block-editor'],
         ]);
     }
@@ -165,6 +188,9 @@ final class BlocksServiceProvider extends ServiceProvider implements Bootable
         }
 
         $dirs = glob($blocksDir . '/*/block.json');
+        if ($dirs === false) {
+            return;
+        }
 
         foreach ($dirs as $blockJson) {
             $blockDir = dirname($blockJson);
@@ -186,39 +212,6 @@ final class BlocksServiceProvider extends ServiceProvider implements Bootable
     }
 
     /**
-     * Resolve the path to block.json for a block.
-     */
-    private function resolveBlockJsonPath(Block $attribute): ?string
-    {
-        // Custom path specified
-        if ($attribute->blockJsonPath !== null) {
-            $path = \Kleinweb\UserProfile\PLUGIN_DIR . '/' . ltrim($attribute->blockJsonPath, '/');
-
-            return file_exists($path) ? $path : null;
-        }
-
-        // Default: look in resources/blocks/{name}/block.json
-        $path = sprintf(
-            '%s/resources/blocks/%s/block.json',
-            \Kleinweb\UserProfile\PLUGIN_DIR,
-            $attribute->name,
-        );
-
-        if (file_exists($path)) {
-            return $path;
-        }
-
-        // Also check build output directory
-        $buildPath = sprintf(
-            '%s/public/build/blocks/%s/block.json',
-            \Kleinweb\UserProfile\PLUGIN_DIR,
-            $attribute->name,
-        );
-
-        return file_exists($buildPath) ? $buildPath : null;
-    }
-
-    /**
      * Parse #[Block] attributes from registered classes.
      */
     private function parseBlockAttributes(): void
@@ -227,7 +220,7 @@ final class BlocksServiceProvider extends ServiceProvider implements Bootable
             $reflection = new ReflectionClass($class);
             $attributes = $reflection->getAttributes(Block::class);
 
-            if (empty($attributes)) {
+            if ($attributes === []) {
                 continue;
             }
 

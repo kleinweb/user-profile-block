@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+// phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
+
 namespace Kleinweb\UserProfile\Blocks;
 
 /**
@@ -14,8 +16,6 @@ final class SocialIcons
 {
     /**
      * Platform configuration with labels and SVG icons.
-     *
-     * @var array<string, array{label: string, svg: string}>
      */
     private const PLATFORMS = [
         'linkedin_url' => [
