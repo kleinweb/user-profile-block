@@ -1,6 +1,6 @@
 {
   "name": "kleinweb/user-profile-block",
-  "type": "project",
+  "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "description": "The website source code for User Profile Block",
   "homepage": "https://github.com/kleinweb",
