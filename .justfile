@@ -22,7 +22,7 @@ build:
 check:
   biome check {{prj-root}}
   pnpm check
-  markdownlint '**/*.md' --ignore node_modules --ignore vendor --ignore wp --ignore CLAUDE.md
+  markdownlint -p .markdownlintignore '**/*.md'
   reuse lint
   nix run 'github:kleinweb/beams#php-lint-project'
   composer php-cs-fixer -- check

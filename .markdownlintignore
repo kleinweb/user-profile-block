@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+# SPDX-License-Identifier: CC0-1.0
+
+node_modules
+vendor
+wp
+
+CLAUDE.md
+CHANGELOG.md
+private/migrate/migrate.md
+private/migrate/README.md

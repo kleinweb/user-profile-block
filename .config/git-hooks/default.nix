@@ -16,18 +16,15 @@
             ];
             stages = [ "pre-commit" ];
           };
-          markdownlint.enable = true;
-          markdownlint.excludes = [
-            # Auto-generated
-            "CHANGELOG.md"
-
-            # Auto-exported from private/migrate/migration.org
-            "private/migrate/migrate.md"
-            "private/migrate/README.md"
-
-            # AI instructions (not project documentation)
-            "CLAUDE.md"
-          ];
+          markdownlint = {
+            enable = true;
+            excludes = [
+              "CHANGELOG.md"
+              "CLAUDE.md"
+              "private/migrate/migrate.md"
+              "private/migrate/README.md"
+            ];
+          };
           php-lint = {
             enable = true;
             description = "Check PHP files for syntax errors";
