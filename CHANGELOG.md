@@ -13,6 +13,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [1.0.2](https://github.com/kleinweb/user-profile-block/compare/84686a5095cd70afe7db384265a7a42063381f1e..1.0.2) - 2025-12-18
 #### Bug Fixes
 - handle autoloader for both standalone and Composer installs - ([84686a5](https://github.com/kleinweb/user-profile-block/commit/84686a5095cd70afe7db384265a7a42063381f1e)) - chris montgomery
+#### Miscellaneous Chores
+- (**version**) 1.0.2 - ([4ed0bf2](https://github.com/kleinweb/user-profile-block/commit/4ed0bf250c817c3823c96ae0e5c481b19b8a31d5)) - chris montgomery
+
+- - -
+
+## [1.0.2](https://github.com/kleinweb/user-profile-block/compare/84686a5095cd70afe7db384265a7a42063381f1e..1.0.2) - 2025-12-18
+#### Bug Fixes
+- handle autoloader for both standalone and Composer installs - ([84686a5](https://github.com/kleinweb/user-profile-block/commit/84686a5095cd70afe7db384265a7a42063381f1e)) - chris montgomery
 
 - - -
 
