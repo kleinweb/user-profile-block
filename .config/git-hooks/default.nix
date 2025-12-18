@@ -24,6 +24,9 @@
             # Auto-exported from private/migrate/migration.org
             "private/migrate/migrate.md"
             "private/migrate/README.md"
+
+            # AI instructions (not project documentation)
+            "CLAUDE.md"
           ];
           php-lint = {
             enable = true;
