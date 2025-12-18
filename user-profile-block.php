@@ -33,7 +33,20 @@ const VERSION = '1.0.1';
 const PLUGIN_FILE = __FILE__;
 const PLUGIN_DIR = __DIR__;
 
-require_once __DIR__ . '/vendor/autoload.php';
+// Load autoloader if it exists (not present when installed via Composer)
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+} elseif (!class_exists(ServiceContainer::class)) {
+    add_action('admin_notices', static function (): void {
+        $message = __(
+            'User Profile Block: Autoloader not found. ' .
+            'Run "composer install" or install via Composer.',
+            'user-profile-block'
+        );
+        printf('<div class="error"><p>%s</p></div>', esc_html($message));
+    });
+    return;
+}
 
 function plugin(): ServiceContainer
 {
