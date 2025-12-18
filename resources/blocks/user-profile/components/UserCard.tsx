@@ -11,11 +11,6 @@ interface WPUser {
 
 export interface UserCardProps {
   user: WPUser
-  showAvatar?: boolean
-  showName?: boolean
-  showBio?: boolean
-  showLabels?: boolean
-  iconSize?: 'small' | 'medium' | 'large'
 }
 
 const SOCIAL_META_KEYS = [
@@ -37,9 +32,11 @@ export function UserCard({user}: UserCardProps) {
     url: user.meta?.[key] ?? '',
   })).filter(({url}) => url !== '')
 
-  const shouldRender = socialLinks.length >= 0
+  if (socialLinks.length === 0) {
+    return null
+  }
 
-  return shouldRender ? (
+  return (
     <article className="wp-block-kleinweb-user-profile__card">
       <h3 className="wp-block-kleinweb-user-profile__name">
         {__('Connect with', 'user-profile-block')} {user.name}
@@ -54,5 +51,5 @@ export function UserCard({user}: UserCardProps) {
         ))}
       </nav>
     </article>
-  ) : null
+  )
 }

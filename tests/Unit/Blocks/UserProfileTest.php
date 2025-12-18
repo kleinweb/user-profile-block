@@ -22,6 +22,16 @@ final class UserProfileTest extends TestCase
     {
         parent::setUp();
         $this->block = new UserProfile();
+
+        // Set up common WordPress function stubs
+        Functions\stubs([
+            'esc_html' => static fn ($text) => $text,
+            'esc_html__' => static fn ($text) => $text,
+            'esc_attr' => static fn ($text) => $text,
+            'esc_url' => static fn ($url) => $url,
+            '__' => static fn ($text) => $text,
+            'get_author_posts_url' => static fn ($id) => "https://example.com/author/{$id}/",
+        ]);
     }
 
     #[Test]
@@ -31,40 +41,14 @@ final class UserProfileTest extends TestCase
         Functions\expect('get_post_field')->with('post_author', 1)->andReturn(0);
 
         $wpBlock = $this->createWpBlock([]);
-        $result = $this->block->render(['usePostAuthor' => true, 'selectedUserIds' => []], '', $wpBlock);
+        $attributes = ['usePostAuthor' => true, 'selectedUserIds' => []];
+        $result = $this->block->render($attributes, '', $wpBlock);
 
         self::assertSame('', $result);
     }
 
     #[Test]
-    public function renderOutputsUserCardWhenAuthorExists(): void
-    {
-        $user = $this->createMockUser(1, 'Test User', 'A bio');
-
-        Functions\expect('get_the_ID')->andReturn(1);
-        Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
-        Functions\expect('get_userdata')->with(1)->andReturn($user);
-        Functions\expect('get_user_meta')->andReturn('');
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
-        Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
-
-        $wpBlock = $this->createWpBlock([]);
-        $result = $this->block->render([
-            'usePostAuthor' => true,
-            'selectedUserIds' => [],
-            'showAvatar' => true,
-            'showName' => true,
-            'showBio' => true,
-        ], '', $wpBlock);
-
-        self::assertStringContainsString('wp-block-kleinweb-user-profile', $result);
-        self::assertStringContainsString('Test User', $result);
-        self::assertStringContainsString('A bio', $result);
-        self::assertStringContainsString('<article', $result);
-    }
-
-    #[Test]
-    public function renderHidesAvatarWhenDisabled(): void
+    public function renderReturnsEmptyStringWhenUserHasNoSocialLinks(): void
     {
         $user = $this->createMockUser(1, 'Test User');
 
@@ -72,43 +56,42 @@ final class UserProfileTest extends TestCase
         Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
         Functions\expect('get_userdata')->with(1)->andReturn($user);
         Functions\expect('get_user_meta')->andReturn('');
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
 
         $wpBlock = $this->createWpBlock([]);
         $result = $this->block->render([
             'usePostAuthor' => true,
             'selectedUserIds' => [],
-            'showAvatar' => false,
-            'showName' => true,
-            'showBio' => false,
         ], '', $wpBlock);
 
-        self::assertStringNotContainsString('wp-block-kleinweb-user-profile__avatar', $result);
+        // Card should not render without social links
+        self::assertStringNotContainsString('__card', $result);
     }
 
     #[Test]
-    public function renderHidesNameWhenDisabled(): void
+    public function renderOutputsUserCardWhenUserHasSocialLinks(): void
     {
-        $user = $this->createMockUser(1, 'Hidden Name');
+        $user = $this->createMockUser(1, 'Test User');
 
         Functions\expect('get_the_ID')->andReturn(1);
         Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
         Functions\expect('get_userdata')->with(1)->andReturn($user);
-        Functions\expect('get_user_meta')->andReturn('');
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
-        Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
+        Functions\expect('get_user_meta')
+            ->andReturnUsing($this->socialLinkCallback('linkedin_url', 'https://li.com/in/test'));
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
 
         $wpBlock = $this->createWpBlock([]);
         $result = $this->block->render([
             'usePostAuthor' => true,
             'selectedUserIds' => [],
-            'showAvatar' => true,
-            'showName' => false,
-            'showBio' => false,
         ], '', $wpBlock);
 
-        self::assertStringNotContainsString('Hidden Name', $result);
-        self::assertStringNotContainsString('wp-block-kleinweb-user-profile__name', $result);
+        self::assertStringContainsString('wp-block-kleinweb-user-profile', $result);
+        self::assertStringContainsString('wp-block-kleinweb-user-profile__card', $result);
+        self::assertStringContainsString('Test User', $result);
+        self::assertStringContainsString('<article', $result);
     }
 
     #[Test]
@@ -120,28 +103,18 @@ final class UserProfileTest extends TestCase
         Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
         Functions\expect('get_userdata')->with(1)->andReturn($user);
         Functions\expect('get_user_meta')
-            ->andReturnUsing(static function (int $userId, string $key) {
-                if ($key === 'linkedin_url') {
-                    return 'https://linkedin.com/in/testuser';
-                }
-                if ($key === 'twitter_url') {
-                    return 'https://twitter.com/testuser';
-                }
-
-                return '';
+            ->andReturnUsing(static fn (int $_userId, string $key): string => match ($key) {
+                'linkedin_url' => 'https://linkedin.com/in/testuser',
+                'twitter_url' => 'https://twitter.com/testuser',
+                default => '',
             });
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
-        Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
 
         $wpBlock = $this->createWpBlock([]);
         $result = $this->block->render([
             'usePostAuthor' => true,
             'selectedUserIds' => [],
-            'showAvatar' => true,
-            'showName' => true,
-            'showBio' => false,
-            'showLabels' => false,
-            'iconSize' => 'medium',
         ], '', $wpBlock);
 
         self::assertStringContainsString('wp-block-kleinweb-user-profile__social', $result);
@@ -151,51 +124,21 @@ final class UserProfileTest extends TestCase
     }
 
     #[Test]
-    public function renderShowsLabelsWhenEnabled(): void
-    {
-        $user = $this->createMockUser(1, 'Label User');
-
-        Functions\expect('get_the_ID')->andReturn(1);
-        Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
-        Functions\expect('get_userdata')->with(1)->andReturn($user);
-        Functions\expect('get_user_meta')
-            ->andReturnUsing(static fn (int $userId, string $key) => $key === 'instagram_url' ? 'https://instagram.com/testuser' : '');
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
-        Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
-
-        $wpBlock = $this->createWpBlock([]);
-        $result = $this->block->render([
-            'usePostAuthor' => true,
-            'selectedUserIds' => [],
-            'showAvatar' => true,
-            'showName' => true,
-            'showBio' => false,
-            'showLabels' => true,
-            'iconSize' => 'medium',
-        ], '', $wpBlock);
-
-        self::assertStringContainsString('wp-block-kleinweb-user-profile__social-label', $result);
-        self::assertStringContainsString('Instagram', $result);
-    }
-
-    #[Test]
     public function renderSupportsSelectedUserIds(): void
     {
         $selectedUser = $this->createMockUser(99, 'Selected User');
 
         Functions\expect('get_the_ID')->andReturn(1);
         Functions\expect('get_userdata')->with(99)->andReturn($selectedUser);
-        Functions\expect('get_user_meta')->andReturn('');
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
-        Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
+        Functions\expect('get_user_meta')
+            ->andReturnUsing($this->socialLinkCallback('linkedin_url', 'https://li.com/in/sel'));
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
 
         $wpBlock = $this->createWpBlock([]);
         $result = $this->block->render([
             'usePostAuthor' => false,
             'selectedUserIds' => [99],
-            'showAvatar' => true,
-            'showName' => true,
-            'showBio' => false,
         ], '', $wpBlock);
 
         self::assertStringContainsString('Selected User', $result);
@@ -209,22 +152,20 @@ final class UserProfileTest extends TestCase
         Functions\expect('get_the_ID')->andReturn(1);
         Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
         Functions\expect('get_userdata')->with(1)->andReturn($user);
-        Functions\expect('get_user_meta')->andReturn('');
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
-        Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
+        Functions\expect('get_user_meta')
+            ->andReturnUsing($this->socialLinkCallback('linkedin_url', 'https://li.com/in/dupe'));
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
 
         $wpBlock = $this->createWpBlock([]);
         $result = $this->block->render([
             'usePostAuthor' => true,
             // Same as post author
             'selectedUserIds' => [1],
-            'showAvatar' => true,
-            'showName' => true,
-            'showBio' => false,
         ], '', $wpBlock);
 
-        // Should only appear once
-        self::assertSame(1, substr_count($result, 'Duplicate User'));
+        // Should only appear once in the card (appears twice: heading text + link)
+        self::assertSame(1, substr_count($result, '__card'));
     }
 
     #[Test]
@@ -234,58 +175,102 @@ final class UserProfileTest extends TestCase
 
         Functions\expect('get_post_field')->with('post_author', 42)->andReturn(5);
         Functions\expect('get_userdata')->with(5)->andReturn($user);
-        Functions\expect('get_user_meta')->andReturn('');
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
-        Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
+        Functions\expect('get_user_meta')
+            ->andReturnUsing($this->socialLinkCallback('instagram_url', 'https://ig.com/ctx'));
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
 
         // Block context provides post ID 42
         $wpBlock = $this->createWpBlock(['postId' => 42]);
         $result = $this->block->render([
             'usePostAuthor' => true,
             'selectedUserIds' => [],
-            'showAvatar' => true,
-            'showName' => true,
-            'showBio' => false,
         ], '', $wpBlock);
 
         self::assertStringContainsString('Context User', $result);
     }
 
     #[Test]
-    public function renderAppliesIconSizeClass(): void
+    public function renderShowsConnectWithHeading(): void
     {
-        $user = $this->createMockUser(1, 'Size User');
+        $user = $this->createMockUser(1, 'Heading User');
 
         Functions\expect('get_the_ID')->andReturn(1);
         Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
         Functions\expect('get_userdata')->with(1)->andReturn($user);
         Functions\expect('get_user_meta')
-            ->andReturnUsing(static fn (int $userId, string $key) => $key === 'facebook_url' ? 'https://facebook.com/testuser' : '');
-        Functions\expect('get_block_wrapper_attributes')->andReturn('class="wp-block-kleinweb-user-profile"');
-        Functions\expect('get_avatar')->andReturn('<img src="avatar.jpg" />');
+            ->andReturnUsing($this->socialLinkCallback('twitter_url', 'https://x.com/heading'));
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
 
         $wpBlock = $this->createWpBlock([]);
         $result = $this->block->render([
             'usePostAuthor' => true,
             'selectedUserIds' => [],
-            'showAvatar' => true,
-            'showName' => true,
-            'showBio' => false,
-            'showLabels' => false,
-            'iconSize' => 'large',
         ], '', $wpBlock);
 
-        self::assertStringContainsString('wp-block-kleinweb-user-profile__social-link--large', $result);
+        self::assertStringContainsString('Connect with', $result);
+        self::assertStringContainsString('wp-block-kleinweb-user-profile__name', $result);
+    }
+
+    #[Test]
+    public function renderIncludesAccessibleSocialNavigation(): void
+    {
+        $user = $this->createMockUser(1, 'Accessible User');
+
+        Functions\expect('get_the_ID')->andReturn(1);
+        Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
+        Functions\expect('get_userdata')->with(1)->andReturn($user);
+        Functions\expect('get_user_meta')
+            ->andReturnUsing($this->socialLinkCallback('facebook_url', 'https://fb.com/acc'));
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
+
+        $wpBlock = $this->createWpBlock([]);
+        $result = $this->block->render([
+            'usePostAuthor' => true,
+            'selectedUserIds' => [],
+        ], '', $wpBlock);
+
+        self::assertStringContainsString('<nav', $result);
+        self::assertStringContainsString('aria-label', $result);
+        self::assertStringContainsString('Social links for', $result);
+    }
+
+    #[Test]
+    public function renderIncludesScreenReaderLabels(): void
+    {
+        $user = $this->createMockUser(1, 'Screen Reader User');
+
+        Functions\expect('get_the_ID')->andReturn(1);
+        Functions\expect('get_post_field')->with('post_author', 1)->andReturn(1);
+        Functions\expect('get_userdata')->with(1)->andReturn($user);
+        Functions\expect('get_user_meta')
+            ->andReturnUsing($this->socialLinkCallback('youtube_url', 'https://yt.com/@sr'));
+        Functions\expect('get_block_wrapper_attributes')
+            ->andReturn('class="wp-block-kleinweb-user-profile"');
+
+        $wpBlock = $this->createWpBlock([]);
+        $result = $this->block->render([
+            'usePostAuthor' => true,
+            'selectedUserIds' => [],
+        ], '', $wpBlock);
+
+        self::assertStringContainsString('screen-reader-text', $result);
+        self::assertStringContainsString('wp-block-kleinweb-user-profile__social-label', $result);
     }
 
     /**
      * Create a mock WP_Block object.
      *
      * @param array<string, mixed> $context
+     *
+     * @return WP_Block&\Mockery\MockInterface
      */
     private function createWpBlock(array $context): WP_Block
     {
         $block = Mockery::mock(WP_Block::class);
+        \assert($block instanceof WP_Block);
         $block->context = $context;
 
         return $block;
@@ -293,14 +278,30 @@ final class UserProfileTest extends TestCase
 
     /**
      * Create a mock WP_User object.
+     *
+     * @return WP_User&\Mockery\MockInterface
      */
-    private function createMockUser(int $id, string $displayName, string $description = ''): WP_User
-    {
+    private function createMockUser(
+        int $id,
+        string $displayName,
+        string $description = '',
+    ): WP_User {
         $user = Mockery::mock(WP_User::class);
+        \assert($user instanceof WP_User);
         $user->ID = $id;
         $user->display_name = $displayName;
         $user->description = $description;
 
         return $user;
+    }
+
+    /**
+     * Create a callback for get_user_meta that returns URL for specific key.
+     *
+     * @return callable(int, string): string
+     */
+    private function socialLinkCallback(string $metaKey, string $url): callable
+    {
+        return static fn (int $_userId, string $key): string => $key === $metaKey ? $url : '';
     }
 }

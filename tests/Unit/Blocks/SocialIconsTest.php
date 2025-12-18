@@ -18,7 +18,6 @@ final class SocialIconsTest extends TestCase
     {
         $keys = SocialIcons::getPlatformKeys();
 
-        self::assertIsArray($keys);
         self::assertNotEmpty($keys);
         self::assertContains('linkedin_url', $keys);
         self::assertContains('instagram_url', $keys);
@@ -51,7 +50,6 @@ final class SocialIconsTest extends TestCase
         $label = SocialIcons::getLabel($metaKey);
 
         self::assertNotEmpty($label);
-        self::assertIsString($label);
     }
 
     #[Test]
@@ -101,7 +99,8 @@ final class SocialIconsTest extends TestCase
     {
         foreach (SocialIcons::getPlatformKeys() as $key) {
             $svg = SocialIcons::getSvg($key);
-            self::assertStringContainsString('role="img"', $svg, "SVG for {$key} should have role='img'");
+            $message = "SVG for {$key} should have role='img'";
+            self::assertStringContainsString('role="img"', $svg, $message);
         }
     }
 

@@ -1,6 +1,18 @@
 # User Profile Block
 
-A WordPress plugin built with modern PHP practices: Composer, PHP-DI service container, PHP 8.3+ attributes, and Vite for assets.
+A WordPress Gutenberg block that displays user profile cards with social
+media links. Built with modern PHP (8.3+), PHP-DI dependency injection,
+and Vite for frontend assets.
+
+## Features
+
+- Gutenberg block for displaying author social links
+- Supports 10 social platforms: LinkedIn, Instagram, X (Twitter), Facebook,
+  TikTok, YouTube, Threads, Bluesky, Substack, and Medium
+- Automatic post author detection with Co-Authors Plus support
+- Manual user selection for custom profile displays
+- Accessible markup with proper ARIA labels
+- Server-side rendered for optimal performance
 
 ## Requirements
 
@@ -11,190 +23,163 @@ A WordPress plugin built with modern PHP practices: Composer, PHP-DI service con
 
 ## Installation
 
-### Using DDEV (recommended)
-
-```bash
-ddev start
-ddev composer install
-ddev npm install
-ddev npm run build
-```
-
-### Manual Setup
-
 ```bash
 composer install
-npm install
-npm run build
+pnpm install
+pnpm build
 ```
 
-Then symlink or copy the plugin to your WordPress `wp-content/plugins/` directory.
+Symlink or copy the plugin to your WordPress `wp-content/plugins/`
+directory and activate.
+
+## Usage
+
+### Adding Social Links to Users
+
+Navigate to **Users > Your Profile** in the WordPress admin. You'll find
+fields for each supported social platform under the "Social Links" section.
+Enter the full URL for each profile.
+
+### Using the Block
+
+1. In the block editor, add the **User Profile** block
+   (found in the "Klein College" category)
+2. By default, it displays the current post's author(s)
+3. Use the block settings to:
+   - Toggle "Show post author" on/off
+   - Select additional users manually
+
+The block only renders if the selected user(s) have at least one social
+link configured.
 
 ## Development
 
 ### Asset Development
 
-Start the Vite dev server for hot module replacement:
-
 ```bash
-npm run dev
+# Start Vite dev server with HMR
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Type check
+pnpm check
 ```
 
-Build for production:
+### PHP Quality
 
 ```bash
-npm run build
-```
-
-### PHP Development
-
-Run linting:
-
-```bash
+# Run all linters (PHPCS + PHPStan)
 composer lint
-composer lint:fix  # Auto-fix issues
+
+# Auto-fix issues
+composer fix
+
+# Static analysis only
+composer phpstan
 ```
 
-Run static analysis:
+### Testing
 
 ```bash
-composer analyze
-```
-
-## Testing
-
-### Unit Tests (Brain Monkey)
-
-Fast, isolated tests that mock WordPress functions:
-
-```bash
+# Unit tests (Brain Monkey - fast, no WordPress)
 composer test:unit
-```
 
-### Integration Tests (wp-browser)
-
-Tests that run against a real WordPress installation:
-
-```bash
-# With DDEV
-ddev exec vendor/bin/codecept run wpunit
-
-# Or
+# Integration tests (wp-browser - requires WordPress)
 composer test:integration
+
+# All tests
+composer test
 ```
 
-### All Tests
+### Full Check
 
 ```bash
-composer test
+just check
 ```
 
 ## Architecture
 
 ### Service Container
 
-The plugin uses PHP-DI for dependency injection. Services are registered through service providers in `src/Providers/`.
+The plugin uses PHP-DI for dependency injection. Entry point is
+`user-profile-block.php` which initializes `ServiceContainer`.
 
 ```php
-// Access services anywhere
-$settings = \Kleinweb\user-profile-block\plugin()->get(SettingsRegistry::class);
+// Access services
+$service = \Kleinweb\UserProfile\plugin()->get(SomeService::class);
 ```
 
-### Attributes for Registration
+### PHP 8 Attributes
 
-Define custom post types, meta fields, and REST fields using PHP 8 attributes:
-
-```php
-#[PostType(
-    slug: 'project',
-    singular: 'Project',
-    plural: 'Projects',
-)]
-final class Project
-{
-    #[Meta(
-        key: 'project_client',
-        objectType: 'post',
-        objectSubtype: 'project',
-        type: 'string',
-        label: 'Client Name',
-    )]
-    public string $client = '';
-}
-```
-
-### Hook Subscribers
-
-Implement `HookSubscriber` to declare WordPress hooks:
+Blocks and meta fields are registered using PHP 8 attributes:
 
 ```php
-final class MyService implements HookSubscriber
+#[Block(name: 'user-profile')]
+final class UserProfile
 {
-    public function getSubscribedHooks(): array
-    {
-        return [
-            'init' => 'onInit',
-            'save_post' => ['method' => 'onSavePost', 'args' => 2],
-        ];
+    public function render(
+        array $attributes,
+        string $content,
+        WP_Block $block,
+    ): string {
+        // Server-side render
     }
 }
 ```
 
-### Settings
-
-Settings bypass the WordPress Settings API in favor of a REST-based approach:
-
-- Schema defined in `SettingsRegistry`
-- REST endpoints at `/wp-json/plugin-name/v1/settings`
-- React UI in `resources/js/settings/`
-
-## Directory Structure
-
+```php
+#[Meta(
+    key: 'linkedin_url',
+    objectType: 'user',
+    type: 'string',
+    showInRest: true,
+)]
+public string $linkedinUrl = '';
 ```
-plugin-name/
-├── config/              # Container configuration
-├── public/build/        # Compiled assets (gitignored)
+
+### Directory Structure
+
+```text
+user-profile-block/
+├── config/                  # Container configuration
+├── public/build/            # Compiled assets (gitignored)
 ├── resources/
-│   ├── css/            # Source CSS
+│   ├── blocks/              # Gutenberg block source
+│   │   └── user-profile/    # User Profile block
+│   ├── css/                 # Stylesheets
 │   └── js/
-│       ├── editor/     # Block editor sidebar
-│       ├── frontend/   # Public-facing scripts
-│       └── settings/   # Settings page React app
+│       ├── editor/          # Block editor scripts
+│       ├── frontend/        # Public-facing scripts
+│       └── settings/        # Admin settings page
 ├── src/
-│   ├── Assets/         # Vite helper
-│   ├── Attributes/     # PHP attributes (PostType, Meta, RestField)
-│   ├── Container/      # Service container
-│   ├── Contracts/      # Interfaces
-│   ├── PostTypes/      # Post type definitions
-│   ├── Providers/      # Service providers
-│   ├── Settings/       # Settings registry and REST controller
-│   ├── Taxonomies/     # Term meta definitions
-│   └── Users/          # User meta definitions
+│   ├── Blocks/              # Block PHP classes
+│   ├── Container/           # Service container
+│   ├── Meta/                # Meta field registration
+│   ├── Support/             # Utilities (Vite, ServiceProvider)
+│   └── Users/               # User profile fields
 ├── tests/
-│   ├── unit/           # Brain Monkey unit tests
-│   └── wpunit/         # wp-browser integration tests
-└── plugin-name.php     # Main plugin file
+│   ├── Integration/         # wp-browser integration tests
+│   └── Unit/                # Brain Monkey unit tests
+└── user-profile-block.php   # Main plugin file
 ```
 
-## Customization
+## Supported Social Platforms
 
-### Adding a New Post Type
-
-1. Create a class in `src/PostTypes/`
-2. Add the `#[PostType]` attribute
-3. Add any meta fields with `#[Meta]` attributes
-4. Register in `PostTypeServiceProvider::$postTypeClasses`
-5. Register in `MetaServiceProvider::$metaClasses`
-
-### Adding New Settings
-
-Edit `src/Settings/SettingsRegistry.php` and add fields to the `$schema` array. The React UI will automatically render the appropriate controls.
-
-### Adding Hook Subscribers
-
-1. Create a class implementing `HookSubscriber`
-2. Add to the `hook_subscribers` array in `config/container.php`
+| Platform  | Meta Key        |
+| --------- | --------------- |
+| LinkedIn  | `linkedin_url`  |
+| Instagram | `instagram_url` |
+| X/Twitter | `twitter_url`   |
+| Facebook  | `facebook_url`  |
+| TikTok    | `tiktok_url`    |
+| YouTube   | `youtube_url`   |
+| Threads   | `threads_url`   |
+| Bluesky   | `bluesky_url`   |
+| Substack  | `substack_url`  |
+| Medium    | `medium_url`    |
 
 ## License
 
-GPL-2.0-or-later
+GPL-3.0-or-later

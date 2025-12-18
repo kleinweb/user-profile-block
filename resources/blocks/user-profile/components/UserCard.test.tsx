@@ -18,127 +18,20 @@ const createMockUser = (overrides = {}) => ({
 })
 
 describe('UserCard', () => {
-  it('renders user name when showName is true', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={false}
-        showName={true}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
+  it('renders user name in heading', () => {
+    render(<UserCard user={createMockUser()} />)
 
-    expect(screen.getByRole('heading', {name: 'Test User'})).toBeInTheDocument()
+    expect(screen.getByRole('heading', {name: /Test User/})).toBeInTheDocument()
   })
 
-  it('hides user name when showName is false', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={false}
-        showName={false}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
+  it('renders Connect with text', () => {
+    render(<UserCard user={createMockUser()} />)
 
-    expect(screen.queryByRole('heading')).not.toBeInTheDocument()
-  })
-
-  it('renders avatar when showAvatar is true', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={true}
-        showName={false}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
-
-    const img = screen.getByRole('img', {name: 'Test User'})
-    expect(img).toHaveAttribute('src', 'https://example.com/avatar-96.jpg')
-  })
-
-  it('hides avatar when showAvatar is false', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={false}
-        showName={true}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
-
-    expect(
-      screen.queryByRole('img', {name: 'Test User'}),
-    ).not.toBeInTheDocument()
-  })
-
-  it('renders bio when showBio is true and user has description', () => {
-    render(
-      <UserCard
-        user={createMockUser({description: 'My cool bio'})}
-        showAvatar={false}
-        showName={false}
-        showBio={true}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
-
-    expect(screen.getByText('My cool bio')).toBeInTheDocument()
-  })
-
-  it('hides bio when showBio is false', () => {
-    render(
-      <UserCard
-        user={createMockUser({description: 'Hidden bio'})}
-        showAvatar={false}
-        showName={false}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
-
-    expect(screen.queryByText('Hidden bio')).not.toBeInTheDocument()
-  })
-
-  it('hides bio when user has no description', () => {
-    const {container} = render(
-      <UserCard
-        user={createMockUser({description: ''})}
-        showAvatar={false}
-        showName={false}
-        showBio={true}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
-
-    expect(
-      container.querySelector('.wp-block-kleinweb-user-profile__bio'),
-    ).not.toBeInTheDocument()
+    expect(screen.getByText(/Connect with/)).toBeInTheDocument()
   })
 
   it('renders social links navigation', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={false}
-        showName={false}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
+    render(<UserCard user={createMockUser()} />)
 
     expect(screen.getByRole('navigation')).toBeInTheDocument()
     expect(screen.getByRole('navigation')).toHaveAttribute(
@@ -148,16 +41,7 @@ describe('UserCard', () => {
   })
 
   it('renders multiple social links', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={false}
-        showName={false}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
+    render(<UserCard user={createMockUser()} />)
 
     const links = screen.getAllByRole('link')
     expect(links).toHaveLength(2)
@@ -165,108 +49,40 @@ describe('UserCard', () => {
     expect(links[1]).toHaveAttribute('href', 'https://twitter.com/testuser')
   })
 
-  it('shows "No social links" message when user has no social links', () => {
-    render(
-      <UserCard
-        user={createMockUser({meta: {}})}
-        showAvatar={false}
-        showName={true}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
+  it('returns null when user has no social links', () => {
+    const {container} = render(<UserCard user={createMockUser({meta: {}})} />)
 
-    expect(screen.getByText('No social links configured')).toBeInTheDocument()
-  })
-
-  it('passes showLabels prop to SocialIcon', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={false}
-        showName={false}
-        showBio={false}
-        showLabels={true}
-        iconSize="medium"
-      />,
-    )
-
-    // When showLabels is true, labels should be visible
-    expect(screen.getByText('LinkedIn')).toBeInTheDocument()
-    expect(screen.getByText('X')).toBeInTheDocument()
-  })
-
-  it('passes iconSize prop to SocialIcon', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={false}
-        showName={false}
-        showBio={false}
-        showLabels={false}
-        iconSize="large"
-      />,
-    )
-
-    const links = screen.getAllByRole('link')
-    links.forEach(link => {
-      expect(link).toHaveClass(
-        'wp-block-kleinweb-user-profile__social-link--large',
-      )
-    })
+    expect(container.firstChild).toBeNull()
   })
 
   it('renders as an article element', () => {
-    render(
-      <UserCard
-        user={createMockUser()}
-        showAvatar={false}
-        showName={true}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
+    render(<UserCard user={createMockUser()} />)
 
     expect(screen.getByRole('article')).toBeInTheDocument()
   })
 
-  it('falls back to 48px avatar when 96px is not available', () => {
+  it('renders social icons with SVG', () => {
+    const {container} = render(<UserCard user={createMockUser()} />)
+
+    const svgs = container.querySelectorAll('svg')
+    expect(svgs.length).toBeGreaterThan(0)
+  })
+
+  it('only renders links for platforms with URLs', () => {
     render(
       <UserCard
         user={createMockUser({
-          avatar_urls: {
-            '48': 'https://example.com/avatar-48.jpg',
+          meta: {
+            linkedin_url: 'https://linkedin.com/in/testuser',
+            twitter_url: '',
+            facebook_url: '',
           },
         })}
-        showAvatar={true}
-        showName={false}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
       />,
     )
 
-    const img = screen.getByRole('img', {name: 'Test User'})
-    expect(img).toHaveAttribute('src', 'https://example.com/avatar-48.jpg')
-  })
-
-  it('hides avatar when no avatar URLs available', () => {
-    const {container} = render(
-      <UserCard
-        user={createMockUser({avatar_urls: {}})}
-        showAvatar={true}
-        showName={true}
-        showBio={false}
-        showLabels={false}
-        iconSize="medium"
-      />,
-    )
-
-    // Avatar img should not exist (SVGs have role="img" but are not the avatar)
-    expect(
-      container.querySelector('.wp-block-kleinweb-user-profile__avatar img'),
-    ).not.toBeInTheDocument()
+    const links = screen.getAllByRole('link')
+    expect(links).toHaveLength(1)
+    expect(links[0]).toHaveAttribute('href', 'https://linkedin.com/in/testuser')
   })
 })

@@ -34,36 +34,37 @@ abstract class TestCase extends PHPUnitTestCase
     protected function mockWordPressFunctions(): void
     {
         // Translation functions - return input unchanged
+        // Note: _e and esc_html_e echo in WP but we just return for tests
         Functions\stubs([
-            '__' => static fn ($text, $domain = 'default') => $text,
-            '_e' => static fn ($text, $domain = 'default') => print($text),
-            '_n' => static fn ($single, $plural, $number, $domain = 'default') => $number === 1 ? $single : $plural,
-            '_x' => static fn ($text, $context, $domain = 'default') => $text,
-            'esc_html__' => static fn ($text, $domain = 'default') => $text,
-            'esc_attr__' => static fn ($text, $domain = 'default') => $text,
-            'esc_html_e' => static fn ($text, $domain = 'default') => print($text),
+            '__' => static fn ($text, $_domain = 'default') => $text,
+            '_e' => static fn ($text, $_domain = 'default') => $text,
+            '_n' => static fn ($s, $p, $n, $_d = 'default') => $n === 1 ? $s : $p,
+            '_x' => static fn ($text, $_context, $_domain = 'default') => $text,
+            'esc_html__' => static fn ($text, $_domain = 'default') => $text,
+            'esc_attr__' => static fn ($text, $_domain = 'default') => $text,
+            'esc_html_e' => static fn ($text, $_domain = 'default') => $text,
         ]);
 
         // Escaping functions
         Functions\stubs([
-            'esc_html' => static fn ($text) => htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8'),
-            'esc_attr' => static fn ($text) => htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8'),
+            'esc_html' => static fn ($t) => htmlspecialchars((string) $t, ENT_QUOTES, 'UTF-8'),
+            'esc_attr' => static fn ($t) => htmlspecialchars((string) $t, ENT_QUOTES, 'UTF-8'),
             'esc_url' => static fn ($url) => filter_var($url, FILTER_SANITIZE_URL),
             'esc_url_raw' => static fn ($url) => filter_var($url, FILTER_SANITIZE_URL),
-            'sanitize_text_field' => static fn ($text) => htmlspecialchars(strip_tags((string) $text)),
+            'sanitize_text_field' => static fn ($t) => htmlspecialchars(strip_tags((string) $t)),
         ]);
 
         // Option functions - can be overridden in individual tests
         Functions\stubs([
-            'get_option' => static fn ($option, $default = false) => $default,
-            'update_option' => static fn ($option, $value) => true,
-            'delete_option' => static fn ($option) => true,
+            'get_option' => static fn ($_opt, $default = false) => $default,
+            'update_option' => static fn ($_opt, $_val) => true,
+            'delete_option' => static fn ($_opt) => true,
         ]);
 
         // Plugin functions
         Functions\stubs([
-            'plugin_basename' => static fn ($file) => basename(dirname($file)) . '/' . basename($file),
-            'plugins_url' => static fn ($path, $file) => 'https://example.com/wp-content/plugins/' . $path,
+            'plugin_basename' => static fn ($f) => basename(dirname($f)) . '/' . basename($f),
+            'plugins_url' => static fn ($p, $_f) => 'https://example.com/wp-content/plugins/' . $p,
         ]);
     }
 }

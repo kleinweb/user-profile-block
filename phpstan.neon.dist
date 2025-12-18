@@ -11,6 +11,7 @@ parameters:
     inferPrivatePropertyTypeFromConstructor: true
     paths:
         - src
+        - tests
         - user-profile-block.php
     excludePaths:
         - vendor

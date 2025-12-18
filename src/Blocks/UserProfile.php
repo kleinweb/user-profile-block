@@ -48,7 +48,7 @@ final class UserProfile
             <?php foreach ($users as $user) { ?>
                 <?php
                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in renderUserCard
-                echo $this->renderUserCard($user, $attributes);
+                echo $this->renderUserCard($user);
                 ?>
             <?php } ?>
         </div>
@@ -136,10 +136,9 @@ final class UserProfile
     /**
      * Render a single user card.
      *
-     * @param WP_User              $user       The user to render
-     * @param array<string, mixed> $attributes Block attributes
+     * @param WP_User $user The user to render
      */
-    private function renderUserCard(WP_User $user, array $attributes): string
+    private function renderUserCard(WP_User $user): string
     {
         $socialLinks = $this->getUserSocialLinks($user);
 
@@ -169,7 +168,7 @@ final class UserProfile
                 <?php foreach ($socialLinks as $metaKey => $url) { ?>
                     <?php
                     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in renderSocialLink
-                    echo $this->renderSocialLink($metaKey, $url, $attributes);
+                    echo $this->renderSocialLink($metaKey, $url);
                     ?>
                 <?php } ?>
             </nav>
@@ -203,12 +202,10 @@ final class UserProfile
     /**
      * Render a single social media link.
      *
-     * @param string               $metaKey    The meta key (e.g., 'linkedin_url')
-     * @param string               $url        The URL
-     * @param array<string, mixed> $attributes Block attributes
+     * @param string $metaKey The meta key (e.g., 'linkedin_url')
+     * @param string $url     The URL
      */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-    private function renderSocialLink(string $metaKey, string $url, array $attributes): string
+    private function renderSocialLink(string $metaKey, string $url): string
     {
         if (!SocialIcons::isSupported($metaKey)) {
             return '';

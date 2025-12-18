@@ -9,7 +9,17 @@ SPDX-License-Identifier: CC0-1.0
     <file>./.php-cs-fixer.dist.php</file>
 
     <file>./src</file>
+    <file>./tests</file>
 
     <rule ref="Kleinweb">
+    </rule>
+
+    <!-- Ignore underscore-prefixed parameters as intentionally unused -->
+    <rule ref="SlevomatCodingStandard.Functions.UnusedParameter">
+        <properties>
+            <property name="allowedParameterPatterns" type="array">
+                <element value="/^_/"/>
+            </property>
+        </properties>
     </rule>
 </ruleset>
