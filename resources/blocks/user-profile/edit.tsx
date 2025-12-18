@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor'
 import type {BlockEditProps} from '@wordpress/blocks'
 import {

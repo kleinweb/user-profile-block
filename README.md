@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+
+SPDX-License-Identifier: CC-BY-NC-SA-4.0
+-->
+
 # User Profile Block
 
 A WordPress Gutenberg block that displays user profile cards with social

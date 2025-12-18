@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import {resolve} from 'node:path'
 import react from '@vitejs/plugin-react'
 import {defineConfig} from 'vitest/config'

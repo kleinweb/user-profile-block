@@ -1,4 +1,9 @@
 <?php
+
+// SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 /**
  * Plugin Name: User Profile Block
  * Plugin URI: https://github.com/kleinweb/user-profile-block

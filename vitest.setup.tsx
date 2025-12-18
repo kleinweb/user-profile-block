@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import '@testing-library/jest-dom/vitest'
 import {cleanup} from '@testing-library/react'
 import {afterEach, vi} from 'vitest'

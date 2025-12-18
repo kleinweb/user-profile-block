@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import {render, screen} from '@testing-library/react'
 import {describe, expect, it} from 'vitest'
 import {UserCard} from './UserCard'

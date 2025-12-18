@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+
+SPDX-License-Identifier: CC-BY-NC-SA-4.0
+-->
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.

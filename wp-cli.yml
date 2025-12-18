@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+#
+# SPDX-License-Identifier: CC0-1.0
+
 # WP-CLI configuration
 # WordPress is installed in a subdirectory
 path: wp

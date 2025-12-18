@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 // Type declarations for WordPress packages without bundled types
 
 declare module '@wordpress/date' {

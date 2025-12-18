@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 import {PanelBody} from '@wordpress/components'
 import {useSelect} from '@wordpress/data'
 import {PluginSidebar, PluginSidebarMoreMenuItem} from '@wordpress/edit-post'
