@@ -23,15 +23,13 @@ release *ARGS='--auto':
 [group: "release"]
 [doc: "Bump version numbers across manifest files"]
 [no-cd]
-bump old new:
-  @if [ -n "{{old}}" ]; then \
-    for file in `rg '^{{wp-header-version-prefix-regexp}}([[:alnum:]\.-]+)$' \
-      --files-with-matches {{prj-root}}`; do \
-      just release::_bump-wp-header {{old}} {{new}} $file; \
-    done; \
-    just release::_bump-php-const {{old}} {{new}} {{prj-root}}/user-profile-block.php; \
-  fi
-  just release::_bump-json {{new}} {{prj-root}}/package.json
+bump version:
+  @for file in `rg '^{{wp-header-version-prefix-regexp}}([[:alnum:]\.-]+)$' \
+    --files-with-matches {{prj-root}}`; do \
+    just release::_bump-wp-header {{version}} $file; \
+  done
+  just release::_bump-php-const {{version}} {{prj-root}}/user-profile-block.php
+  just release::_bump-json {{version}} {{prj-root}}/package.json
 
 @_bump-json version file:
   jq --arg ver '{{version}}' '.version = $ver' {{file}} \
@@ -39,10 +37,10 @@ bump old new:
   echo Bumped {{file}} version to \'{{version}}\'
   biome format --diagnostic-level=warn --write {{file}} >/dev/null
 
-@_bump-wp-header old new file:
-  sed -E -i 's/^({{wp-header-version-prefix-regexp}}){{old}}/\1{{new}}/' {{file}}
-  echo Bumped {{file}} version to \'{{new}}\'
+@_bump-wp-header version file:
+  sed -E -i 's/^({{wp-header-version-prefix-regexp}})[[:alnum:]\.-]+$/\1{{version}}/' {{file}}
+  echo Bumped {{file}} version to \'{{version}}\'
 
-@_bump-php-const old new file:
-  sed -E -i "s/(const VERSION = '){{old}}(';)/\1{{new}}\2/" {{file}}
-  echo Bumped {{file}} PHP const VERSION to \'{{new}}\'
+@_bump-php-const version file:
+  sed -E -i "s/(const VERSION = ')[^']+(';)/\1{{version}}\2/" {{file}}
+  echo Bumped {{file}} PHP const VERSION to \'{{version}}\'
