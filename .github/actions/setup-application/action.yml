@@ -8,6 +8,7 @@ name: Set up application
 
 inputs:
   environment:
+    # yamllint disable-line rule:line-length
     description: 'Target environment. One of: "production", "development", "staging".'
     default: "development"
   github_token:

@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
+# yamllint disable-line rule:line-length
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
 # <https://github.com/marketplace/actions/install-ssh-key>
@@ -71,12 +72,14 @@ jobs:
               User ${{ env.REMOTE_LOGIN }}
               Port ${{ env.REMOTE_PORT }}
 
+      # yamllint disable rule:line-length
       - name: Prepare target environment as Git remote
         run: |
           git remote add production ssh://production-target/private/user-profile-block.git
           git fetch production
-
+      # yamllint enable rule:line-length
       - name: Sync Composer vendor directory to remote
+        # yamllint disable-line rule:line-length
         run: rsync -av --delete ./vendor/ production-target:private/user-profile-block.git/vendor/
 
       - name: Replace .gitignore with .deployignore

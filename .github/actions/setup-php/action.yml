@@ -12,6 +12,7 @@ inputs:
     description: "Additional arguments to pass to `composer install`."
     default: ""
   working_directory:
+    # yamllint disable-line rule:line-length
     description: "Working directory containing a `composer.json` and `composer.lock`."
     default: "."
 

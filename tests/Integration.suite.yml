@@ -2,12 +2,14 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
+---
 actor: WpunitTester
 bootstrap: _bootstrap.php
 modules:
   enabled:
     - lucatume\WPBrowser\Module\WPLoader:
         wpRootFolder: "%WP_ROOT_FOLDER%"
+        # yamllint disable-line rule:line-length
         dbUrl: mysql://%TEST_DB_USER%:%TEST_DB_PASSWORD%@%TEST_DB_HOST%/%TEST_DB_NAME%
         tablePrefix: "%TEST_TABLE_PREFIX%"
         domain: "%WP_DOMAIN%"
