@@ -23,6 +23,7 @@ check:
   biome check {{prj-root}}
   pnpm check
   markdownlint '**/*.md' --ignore node_modules --ignore vendor --ignore wp --ignore CLAUDE.md
+  reuse lint
   nix run 'github:kleinweb/beams#php-lint-project'
   composer php-cs-fixer -- check
   composer phpcs
@@ -42,3 +43,4 @@ fix:
 [doc: "Write _safe_ formatter changes to project files"]
 fmt:
   treefmt
+  reuse annotate --skip-existing --skip-unrecognised --merge-copyrights --license GPL-3.0-or-later --copyright 'Temple University <kleinweb@temple.edu>' .

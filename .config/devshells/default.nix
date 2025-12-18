@@ -16,6 +16,7 @@
         inputs'.nixpkgs-trunk.legacyPackages.biome
         inputs'.beams.packages.php-lint
         pkgs.dotenv-linter
+        pkgs.reuse
       ];
 
       buildsPkgs = [

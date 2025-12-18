@@ -37,11 +37,19 @@
             # Other PHP linters will likely fail when there are syntax errors.
             fail_fast = true;
           };
+          reuse = {
+            enable = true;
+            description = "Check REUSE compliance";
+            entry = "reuse lint";
+            pass_filenames = false;
+            stages = [ "pre-push" ];
+          };
           treefmt.enable = true;
           yamllint.enable = true;
           yamllint.excludes = [
             "^\.copier-answers\.yml$"
             "^\.ddev/.+$"
+            "^pnpm-lock\.yaml$"
           ];
         };
         default_stages = [
