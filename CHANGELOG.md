@@ -10,6 +10,12 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 - - -
+## [1.0.2](https://github.com/kleinweb/user-profile-block/compare/84686a5095cd70afe7db384265a7a42063381f1e..1.0.2) - 2025-12-18
+#### Bug Fixes
+- handle autoloader for both standalone and Composer installs - ([84686a5](https://github.com/kleinweb/user-profile-block/commit/84686a5095cd70afe7db384265a7a42063381f1e)) - chris montgomery
+
+- - -
+
 ## [1.0.1](https://github.com/kleinweb/user-profile-block/compare/531b12805460909fc41083af5b1b350de80e186a..1.0.1) - 2025-12-18
 #### Bug Fixes
 - update plugin description - ([531b128](https://github.com/kleinweb/user-profile-block/commit/531b12805460909fc41083af5b1b350de80e186a)) - chris montgomery
