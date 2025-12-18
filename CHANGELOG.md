@@ -10,6 +10,12 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 - - -
+## [1.0.3](https://github.com/kleinweb/user-profile-block/compare/1899a6912b8dbc169bcce8cceb327de769e2b3f2..1.0.3) - 2025-12-18
+#### Bug Fixes
+- make block category context parameter nullable - ([1899a69](https://github.com/kleinweb/user-profile-block/commit/1899a6912b8dbc169bcce8cceb327de769e2b3f2)) - chris montgomery
+
+- - -
+
 ## [1.0.2](https://github.com/kleinweb/user-profile-block/compare/84686a5095cd70afe7db384265a7a42063381f1e..1.0.2) - 2025-12-18
 #### Bug Fixes
 - handle autoloader for both standalone and Composer installs - ([84686a5](https://github.com/kleinweb/user-profile-block/commit/84686a5095cd70afe7db384265a7a42063381f1e)) - chris montgomery
