@@ -28,6 +28,8 @@ bump old new:
     --files-with-matches {{prj-root}}`; do \
     just release::_bump-wp-header {{old}} {{new}} $file; \
   done
+  just release::_bump-php-const {{old}} {{new}} {{prj-root}}/user-profile-block.php
+  just release::_bump-json {{new}} {{prj-root}}/package.json
 
 @_bump-json version file:
   jq --arg ver '{{version}}' '.version = $ver' {{file}} \
@@ -38,3 +40,7 @@ bump old new:
 @_bump-wp-header old new file:
   sed -E -i 's/^({{wp-header-version-prefix-regexp}}){{old}}/\1{{new}}/' {{file}}
   echo Bumped {{file}} version to \'{{new}}\'
+
+@_bump-php-const old new file:
+  sed -E -i "s/(const VERSION = '){{old}}(';)/\1{{new}}\2/" {{file}}
+  echo Bumped {{file}} PHP const VERSION to \'{{new}}\'

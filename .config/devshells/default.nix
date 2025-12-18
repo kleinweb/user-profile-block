@@ -57,7 +57,8 @@
         pkgs.wp-cli
       ];
 
-      developmentPkgs = commonPkgs ++ checksPkgs ++ formatterPkgs ++ buildsPkgs ++ deployPkgs;
+      developmentPkgs =
+        commonPkgs ++ checksPkgs ++ formatterPkgs ++ buildsPkgs ++ deployPkgs ++ releasePkgs;
 
       playwrightShellHook = ''
         export PLAYWRIGHT_BROWSERS_PATH=${pkgs.playwright-driver.browsers}
