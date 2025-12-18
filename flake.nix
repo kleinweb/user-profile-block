@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2024-2025 Temple University <kleinweb@temple.edu>
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: GPL-2.0-or-later
 {
   description = "User Profile Block";
 

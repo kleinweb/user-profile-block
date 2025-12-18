@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: 2022-2025 Temple University <kleinweb@temple.edu>
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: GPL-2.0-or-later
 
 ###: <https://just.systems/man/en/>
 
@@ -43,4 +43,4 @@ fix:
 [doc: "Write _safe_ formatter changes to project files"]
 fmt:
   treefmt
-  reuse annotate --skip-existing --skip-unrecognised --merge-copyrights --license GPL-3.0-or-later --copyright 'Temple University <kleinweb@temple.edu>' .
+  reuse annotate --skip-existing --skip-unrecognised --merge-copyrights --license GPL-2.0-or-later --copyright 'Temple University <kleinweb@temple.edu>' .
