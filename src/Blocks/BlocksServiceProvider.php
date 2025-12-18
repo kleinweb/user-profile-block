@@ -116,7 +116,7 @@ final class BlocksServiceProvider extends ServiceProvider implements Bootable
      */
     public function registerBlockCategory(
         array $categories,
-        WP_Block_Editor_Context $context,
+        ?WP_Block_Editor_Context $context = null,
     ): array {
         unset($context);
 
