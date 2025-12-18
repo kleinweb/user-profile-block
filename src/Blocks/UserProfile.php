@@ -152,7 +152,7 @@ final class UserProfile
         ?>
         <article class="wp-block-kleinweb-user-profile__card">
             <h3 class="wp-block-kleinweb-user-profile__name">
-                <?php echo __('Connect with', 'user-profile-block'); ?>
+                <?php echo esc_html__('Connect with', 'user-profile-block'); ?>
                 <a href="<?php echo esc_url(get_author_posts_url($user->ID)); ?>">
                     <?php echo esc_html($user->display_name); ?>
                 </a>
@@ -207,6 +207,7 @@ final class UserProfile
      * @param string               $url        The URL
      * @param array<string, mixed> $attributes Block attributes
      */
+    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
     private function renderSocialLink(string $metaKey, string $url, array $attributes): string
     {
         if (!SocialIcons::isSupported($metaKey)) {
