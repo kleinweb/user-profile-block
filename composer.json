@@ -2,8 +2,8 @@
   "name": "kleinweb/user-profile-block",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
-  "description": "The website source code for User Profile Block",
-  "homepage": "https://github.com/kleinweb",
+  "description": "A WordPress Gutenberg block that displays user profile cards with social media links",
+  "homepage": "https://github.com/kleinweb/user-profile-block",
   "authors": [
     {
       "name": "Chris Montgomery",
@@ -24,18 +24,6 @@
       "type": "composer",
       "url": "https://wpackagist.org",
       "only": ["wpackagist-plugin/*", "wpackagist-theme/*"]
-    },
-    {
-      "type": "package",
-      "package": {
-        "name": "kinsta/kinsta-mu-plugins",
-        "type": "wordpress-muplugin",
-        "version": "3.1.1",
-        "dist": {
-          "url": "https://kinsta.com/kinsta-tools/kinsta-mu-plugins.zip",
-          "type": "zip"
-        }
-      }
     }
   ],
   "require": {
@@ -86,13 +74,6 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "extra": {
-    "installer-paths": {
-      "wp-content/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
-      "wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
-      "wp-content/themes/{$name}/": ["type:wordpress-theme"]
-    }
-  },
   "scripts": {
     "php-cs-fixer": "php-cs-fixer",
     "phpstan": "phpstan analyse --memory-limit 2G",
