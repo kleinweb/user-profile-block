@@ -10,6 +10,14 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 - - -
+## [1.0.1](https://github.com/kleinweb/user-profile-block/compare/531b12805460909fc41083af5b1b350de80e186a..1.0.1) - 2025-12-18
+#### Bug Fixes
+- update plugin description - ([531b128](https://github.com/kleinweb/user-profile-block/commit/531b12805460909fc41083af5b1b350de80e186a)) - chris montgomery
+#### Miscellaneous Chores
+- (**license**) standardize on GPL-2.0-or-later - ([f976adb](https://github.com/kleinweb/user-profile-block/commit/f976adb82700b7711cd4450f50da33890c142992)) - chris montgomery
+
+- - -
+
 ## [1.0.0](https://github.com/kleinweb/user-profile-block/compare/1ee1b480c6ac57f6e4f8aeaf7a6e6bb3a4ac3519..1.0.0) - 2025-12-18
 #### Features
 - prepare for first release - ([26a168c](https://github.com/kleinweb/user-profile-block/commit/26a168c1d7bb110894a3a1cc072ab37f8674d250)) - [@montchr](https://github.com/montchr)

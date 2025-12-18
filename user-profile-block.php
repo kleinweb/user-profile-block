@@ -8,7 +8,7 @@
  * Plugin Name: User Profile Block
  * Plugin URI: https://github.com/kleinweb/user-profile-block
  * Description: A WordPress Gutenberg block that displays user profile cards with social media links
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 6.4
  * Requires PHP: 8.3
  * Author: Klein College of Media and Communication
@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const PLUGIN_FILE = __FILE__;
 const PLUGIN_DIR = __DIR__;
 
