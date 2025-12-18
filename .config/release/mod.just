@@ -24,11 +24,13 @@ release *ARGS='--auto':
 [doc: "Bump version numbers across manifest files"]
 [no-cd]
 bump old new:
-  @for file in `rg '^{{wp-header-version-prefix-regexp}}([[:alnum:]\.-]+)$' \
-    --files-with-matches {{prj-root}}`; do \
-    just release::_bump-wp-header {{old}} {{new}} $file; \
-  done
-  just release::_bump-php-const {{old}} {{new}} {{prj-root}}/user-profile-block.php
+  @if [ -n "{{old}}" ]; then \
+    for file in `rg '^{{wp-header-version-prefix-regexp}}([[:alnum:]\.-]+)$' \
+      --files-with-matches {{prj-root}}`; do \
+      just release::_bump-wp-header {{old}} {{new}} $file; \
+    done; \
+    just release::_bump-php-const {{old}} {{new}} {{prj-root}}/user-profile-block.php; \
+  fi
   just release::_bump-json {{new}} {{prj-root}}/package.json
 
 @_bump-json version file:
