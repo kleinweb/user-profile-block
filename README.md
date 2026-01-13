@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: 2025 Temple University <kleinweb@temple.edu>
+SPDX-FileCopyrightText: 2025-2026 Temple University <kleinweb@temple.edu>
 
 SPDX-License-Identifier: CC-BY-NC-SA-4.0
 -->
