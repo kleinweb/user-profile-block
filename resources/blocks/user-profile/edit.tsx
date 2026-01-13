@@ -17,6 +17,7 @@ import {UserCard} from './components/UserCard'
 interface Attributes {
   selectedUserIds: number[]
   usePostAuthor: boolean
+  linkToAuthorPage: boolean | null
 }
 
 interface WPUser {
@@ -32,7 +33,10 @@ export function Edit({
   setAttributes,
   context,
 }: BlockEditProps<Attributes>) {
-  const {selectedUserIds, usePostAuthor} = attributes
+  const {selectedUserIds, usePostAuthor, linkToAuthorPage} = attributes
+
+  // Resolve null to the default (true). Site-wide filter only applies on frontend.
+  const effectiveLinkToAuthorPage = linkToAuthorPage ?? true
 
   const blockProps = useBlockProps({
     className: 'wp-block-kleinweb-user-profile',
@@ -179,6 +183,16 @@ export function Edit({
             onChange={value => setAttributes({usePostAuthor: value})}
           />
 
+          <ToggleControl
+            label={__('Link author name to profile', 'user-profile-block')}
+            help={__(
+              'Make the author name a link to their profile page.',
+              'user-profile-block',
+            )}
+            checked={effectiveLinkToAuthorPage}
+            onChange={value => setAttributes({linkToAuthorPage: value})}
+          />
+
           <FormTokenField
             label={__('Additional users', 'user-profile-block')}
             value={selectedUserNames}
@@ -205,7 +219,13 @@ export function Edit({
             </p>
           </div>
         ) : (
-          displayUsers.map(user => <UserCard key={user.id} user={user} />)
+          displayUsers.map(user => (
+            <UserCard
+              key={user.id}
+              user={user}
+              linkToAuthorPage={effectiveLinkToAuthorPage}
+            />
+          ))
         )}
       </div>
     </>

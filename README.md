@@ -17,6 +17,7 @@ and Vite for frontend assets.
   TikTok, YouTube, Threads, Bluesky, Substack, and Medium
 - Automatic post author detection with Co-Authors Plus support
 - Manual user selection for custom profile displays
+- Configurable author name linking with site-wide default override
 - Accessible markup with proper ARIA labels
 - Server-side rendered for optimal performance
 
@@ -53,10 +54,23 @@ Enter the full URL for each profile.
 2. By default, it displays the current post's author(s)
 3. Use the block settings to:
    - Toggle "Show post author" on/off
+   - Toggle "Link author name to profile" on/off
    - Select additional users manually
 
 The block only renders if the selected user(s) have at least one social
 link configured.
+
+### Customizing the Default Author Link Behavior
+
+By default, author names link to their WordPress author archive page.
+Sites can change this default using a filter:
+
+```php
+// Disable author profile links by default
+add_filter('kleinweb_user_profile_block_link_to_author_page_default', '__return_false');
+```
+
+Individual blocks can still override this via the block settings toggle.
 
 ## Development
 

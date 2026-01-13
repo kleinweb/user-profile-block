@@ -39,6 +39,8 @@ final class UserProfile
             return '';
         }
 
+        $linkToAuthorPage = $this->resolveLinkToAuthorPage($attributes['linkToAuthorPage'] ?? null);
+
         $wrapperAttributes = get_block_wrapper_attributes([
             'class' => 'wp-block-kleinweb-user-profile',
         ]);
@@ -52,13 +54,39 @@ final class UserProfile
             <?php foreach ($users as $user) { ?>
                 <?php
                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in renderUserCard
-                echo $this->renderUserCard($user);
+                echo $this->renderUserCard($user, $linkToAuthorPage);
                 ?>
             <?php } ?>
         </div>
         <?php
 
         return (string) ob_get_clean();
+    }
+
+    /**
+     * Resolve the linkToAuthorPage setting.
+     *
+     * If the attribute is null (not explicitly set), apply the filter to get the site default.
+     *
+     * @param bool|null $attributeValue The block attribute value
+     */
+    private function resolveLinkToAuthorPage(?bool $attributeValue): bool
+    {
+        if ($attributeValue !== null) {
+            return $attributeValue;
+        }
+
+        /*
+         * Filters the default value for linking author names to their profile pages.
+         *
+         * @since 1.1.0
+         *
+         * @param bool $default Whether to link to author pages by default. Default true.
+         */
+        return (bool) apply_filters(
+            'kleinweb_user_profile_block_link_to_author_page_default',
+            true,
+        );
     }
 
     /**
@@ -140,9 +168,10 @@ final class UserProfile
     /**
      * Render a single user card.
      *
-     * @param WP_User $user The user to render
+     * @param WP_User $user             The user to render
+     * @param bool    $linkToAuthorPage Whether to link the author name to their profile page
      */
-    private function renderUserCard(WP_User $user): string
+    private function renderUserCard(WP_User $user, bool $linkToAuthorPage): string
     {
         $socialLinks = $this->getUserSocialLinks($user);
 
@@ -156,9 +185,13 @@ final class UserProfile
         <article class="wp-block-kleinweb-user-profile__card">
             <h3 class="wp-block-kleinweb-user-profile__name">
                 <?php echo esc_html__('Connect with', 'user-profile-block'); ?>
-                <a href="<?php echo esc_url(get_author_posts_url($user->ID)); ?>">
+                <?php if ($linkToAuthorPage) { ?>
+                    <a href="<?php echo esc_url(get_author_posts_url($user->ID)); ?>">
+                        <?php echo esc_html($user->display_name); ?>
+                    </a>
+                <?php } else { ?>
                     <?php echo esc_html($user->display_name); ?>
-                </a>
+                <?php } ?>
             </h3>
 
             <nav class="wp-block-kleinweb-user-profile__social"

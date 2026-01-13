@@ -10,6 +10,16 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 - - -
+
+## [Unreleased]
+
+#### Features
+
+- add toggle to control whether author name links to profile page - configurable
+  per-block with site-wide default via `kleinweb_user_profile_block_link_to_author_page_default`
+  filter
+
+- - -
 ## [1.0.3](https://github.com/kleinweb/user-profile-block/compare/1899a6912b8dbc169bcce8cceb327de769e2b3f2..1.0.3) - 2025-12-18
 #### Bug Fixes
 - make block category context parameter nullable - ([1899a69](https://github.com/kleinweb/user-profile-block/commit/1899a6912b8dbc169bcce8cceb327de769e2b3f2)) - chris montgomery

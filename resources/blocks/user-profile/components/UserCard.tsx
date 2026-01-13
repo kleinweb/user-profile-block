@@ -15,6 +15,7 @@ interface WPUser {
 
 export interface UserCardProps {
   user: WPUser
+  linkToAuthorPage?: boolean
 }
 
 const SOCIAL_META_KEYS = [
@@ -30,7 +31,7 @@ const SOCIAL_META_KEYS = [
   'medium_url',
 ] as const
 
-export function UserCard({user}: UserCardProps) {
+export function UserCard({user, linkToAuthorPage = true}: UserCardProps) {
   const socialLinks = SOCIAL_META_KEYS.map(key => ({
     key,
     url: user.meta?.[key] ?? '',
@@ -40,10 +41,16 @@ export function UserCard({user}: UserCardProps) {
     return null
   }
 
+  const authorName = linkToAuthorPage ? (
+    <a href={`/?author=${user.id}`}>{user.name}</a>
+  ) : (
+    user.name
+  )
+
   return (
     <article className="wp-block-kleinweb-user-profile__card">
       <h3 className="wp-block-kleinweb-user-profile__name">
-        {__('Connect with', 'user-profile-block')} {user.name}
+        {__('Connect with', 'user-profile-block')} {authorName}
       </h3>
 
       <nav

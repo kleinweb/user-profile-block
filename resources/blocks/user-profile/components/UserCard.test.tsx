@@ -28,6 +28,31 @@ describe('UserCard', () => {
     expect(screen.getByRole('heading', {name: /Test User/})).toBeInTheDocument()
   })
 
+  it('renders author name as link when linkToAuthorPage is true', () => {
+    render(<UserCard user={createMockUser()} linkToAuthorPage={true} />)
+
+    const heading = screen.getByRole('heading', {name: /Test User/})
+    const link = heading.querySelector('a')
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '/?author=1')
+  })
+
+  it('renders author name as plain text when linkToAuthorPage is false', () => {
+    render(<UserCard user={createMockUser()} linkToAuthorPage={false} />)
+
+    const heading = screen.getByRole('heading', {name: /Test User/})
+    const link = heading.querySelector('a')
+    expect(link).not.toBeInTheDocument()
+  })
+
+  it('defaults to linking author name when linkToAuthorPage is not specified', () => {
+    render(<UserCard user={createMockUser()} />)
+
+    const heading = screen.getByRole('heading', {name: /Test User/})
+    const link = heading.querySelector('a')
+    expect(link).toBeInTheDocument()
+  })
+
   it('renders Connect with text', () => {
     render(<UserCard user={createMockUser()} />)
 
@@ -45,7 +70,7 @@ describe('UserCard', () => {
   })
 
   it('renders multiple social links', () => {
-    render(<UserCard user={createMockUser()} />)
+    render(<UserCard user={createMockUser()} linkToAuthorPage={false} />)
 
     const links = screen.getAllByRole('link')
     expect(links).toHaveLength(2)
@@ -82,6 +107,7 @@ describe('UserCard', () => {
             facebook_url: '',
           },
         })}
+        linkToAuthorPage={false}
       />,
     )
 
