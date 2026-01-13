@@ -10,6 +10,15 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 - - -
+## [1.1.0](https://github.com/kleinweb/user-profile-block/compare/5b03eb3a4c0df25e70020062cbbccadf23c056bc..1.1.0) - 2026-01-13
+#### Features
+- add toggle to control author name profile linking - ([b7c055f](https://github.com/kleinweb/user-profile-block/commit/b7c055f5f7ade3fb8e8d64a6fa279e666333c200)) - chris montgomery
+#### Miscellaneous Chores
+- update deps - ([b51d841](https://github.com/kleinweb/user-profile-block/commit/b51d8418a04b9b6915c699a1c4a75027d4006c74)) - chris montgomery
+- update copyright years to include 2026 - ([5b03eb3](https://github.com/kleinweb/user-profile-block/commit/5b03eb3a4c0df25e70020062cbbccadf23c056bc)) - chris montgomery
+
+- - -
+
 
 ## [Unreleased]
 
