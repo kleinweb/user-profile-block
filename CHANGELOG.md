@@ -10,6 +10,12 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 - - -
+## [2.0.0](https://github.com/kleinweb/user-profile-block/compare/4e79f411c4608faea6931feef5b7e2d1791fe81b..2.0.0) - 2026-01-13
+#### Features
+- ![BREAKING](https://img.shields.io/badge/BREAKING-red) require kleinweb/lib@1.0.0 - ([4e79f41](https://github.com/kleinweb/user-profile-block/commit/4e79f411c4608faea6931feef5b7e2d1791fe81b)) - chris montgomery
+
+- - -
+
 ## [1.1.0](https://github.com/kleinweb/user-profile-block/compare/5b03eb3a4c0df25e70020062cbbccadf23c056bc..1.1.0) - 2026-01-13
 #### Features
 - add toggle to control author name profile linking - ([b7c055f](https://github.com/kleinweb/user-profile-block/commit/b7c055f5f7ade3fb8e8d64a6fa279e666333c200)) - chris montgomery
