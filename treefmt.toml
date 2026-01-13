@@ -2,7 +2,12 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 [global]
-excludes = ["**/node_modules/**", "**/vendor/**", "**/*.min.*"]
+excludes = [
+  "**/node_modules/**",
+  "**/vendor/**",
+  "**/*.min.*",
+  "pnpm-lock.yaml",
+]
 
 [formatter.biome]
 command = "biome"
