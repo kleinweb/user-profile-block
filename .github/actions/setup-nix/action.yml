@@ -8,12 +8,12 @@ name: Setup Nix
 
 inputs:
   devshell:
-    description: "Name of the devshell to use for CI tasks."
-    default: "ci"
+    description: 'Name of the devshell to use for CI tasks.'
+    default: 'ci'
   github_token:
-    description: "GitHub API token to prevent rate limiting."
+    description: 'GitHub API token to prevent rate limiting.'
   cachix_auth_token:
-    description: "Cachix authentication token for cache writes."
+    description: 'Cachix authentication token for cache writes.'
 
 runs:
   using: composite
@@ -32,7 +32,7 @@ runs:
 
     - uses: DeterminateSystems/magic-nix-cache-action@v8
 
-    - name: "Initialize Nix CI shell"
+    - name: 'Initialize Nix CI shell'
       uses: nicknovitski/nix-develop@v1
       with:
-        arguments: "#${{ inputs.devshell }}"
+        arguments: '#${{ inputs.devshell }}'

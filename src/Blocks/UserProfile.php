@@ -123,7 +123,7 @@ final class UserProfile
             }
 
             $user = get_userdata((int) $userId);
-            if (!($user instanceof WP_User)) {
+            if (!$user instanceof WP_User) {
                 continue;
             }
 

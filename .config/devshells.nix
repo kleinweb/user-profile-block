@@ -1,6 +1,5 @@
-# SPDX-FileCopyrightText: (C) 2025-2026 Temple University <kleinweb@temple.edu>
-# SPDX-License-Identifier: GPL-2.0-or-later
-
+# SPDX-FileCopyrightText: (C) 2024-2026 Temple University <kleinweb@temple.edu>
+# SPDX-License-Identifier: GPL-3.0-or-later
 {
   perSystem =
     {
@@ -13,10 +12,6 @@
       checksPkgs = [
         config.pre-commit.settings.hooks.markdownlint.package
         config.pre-commit.settings.hooks.yamllint.package
-        inputs'.nixpkgs-trunk.legacyPackages.biome
-        inputs'.beams.packages.php-lint
-        pkgs.dotenv-linter
-        pkgs.reuse
       ];
 
       buildsPkgs = [
@@ -29,40 +24,38 @@
 
       formatterPkgs = [
         pkgs.dos2unix
-        pkgs.nixfmt # pkgs.nixfmt-rfc-style via overlay
-        pkgs.nodePackages.prettier
+        pkgs.nixfmt
+        pkgs.prettier
         pkgs.taplo
-        pkgs.treefmt # pkgs.treefmt2 via overlay
+        pkgs.treefmt
       ];
 
       releasePkgs = [
         pkgs.cocogitto
       ];
 
-      php = pkgs.php83;
-
       commonPkgs = [
+        pkgs.biome
         pkgs.curl
         pkgs.fd
         pkgs.gnused
         pkgs.jq
-        inputs'.nixpkgs-trunk.legacyPackages.biome
         pkgs.moreutils
         pkgs.ripgrep
         pkgs.nodejs
-        php
-        php.packages.composer
         pkgs.pnpm
+        pkgs.php
+        pkgs.php.packages.composer
         pkgs.xq-xml
         pkgs.wp-cli
       ];
 
-      developmentPkgs =
-        commonPkgs ++ checksPkgs ++ formatterPkgs ++ buildsPkgs ++ deployPkgs ++ releasePkgs;
-
       playwrightShellHook = ''
         export PLAYWRIGHT_BROWSERS_PATH=${pkgs.playwright-driver.browsers}
       '';
+
+      developmentPkgs =
+        commonPkgs ++ checksPkgs ++ buildsPkgs ++ deployPkgs ++ formatterPkgs ++ releasePkgs;
     in
     {
       devShells.default = pkgs.mkShellNoCC {
@@ -76,10 +69,14 @@
           ${playwrightShellHook}
         '';
         nativeBuildInputs = developmentPkgs ++ [
-          # TODO: Remove when available upstream: https://github.com/NixOS/nixpkgs/pull/344503
-          inputs'.beams.packages.ddev
-
           pkgs.playwright-driver.browsers
+          # pre-commit helper tool to simplify file matching.  For example,
+          # the `yml` and `yaml` extensions share the same "type" of `yaml`.
+          # Otherwise, you would need to write a regexp for both extensions.
+          # <https://pre-commit.com/#filtering-files-with-types>
+          # NOTE: The command is `identify-cli`, not to be confused with
+          # imagemagick's `identify`.
+          pkgs.python311Packages.identify
         ];
       };
 

@@ -13,17 +13,19 @@ runs:
   using: composite
   steps:
     steps:
-      # yamllint disable rule:line-length
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p ${{ vars.TARGET_PORT }} -H ${{ vars.TARGET_HOST }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
+          # FIXME: don't do this! susceptible to MITM attacks!
+          # known_hosts should be defined ahead of time with
+          # *known-good values*
+          # ssh-keyscan -p ${{ vars.TARGET_PORT }} -H ${{ vars.TARGET_HOST }} >> ~/.ssh/known_hosts
+          # chmod 644 ~/.ssh/known_hosts
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_ed25519
-      # yamllint enable rule:line-length
+
       - name: Rsync files to host
         uses: burnett01/rsync-deployments@7.0.1
         with:
@@ -36,7 +38,7 @@ runs:
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       # yamllint disable rule:line-length
-      - name: "Post-deploy: Clear Kinsta cache"
+      - name: 'Post-deploy: Clear Kinsta cache'
         run: |
           ssh ${{ vars.TARGET_USER }}@${{ vars.TARGET_HOST }} -p ${{ vars.TARGET_PORT }} \
           'curl https://${{ vars.TARGET_DOMAIN }}/kinsta-clear-cache-all'

@@ -1,29 +1,30 @@
-# SPDX-FileCopyrightText: (C) 2025-2026 Temple University <kleinweb@temple.edu>
+# SPDX-FileCopyrightText: (C) 2024-2026 Temple University <kleinweb@temple.edu>
 # SPDX-License-Identifier: CC0-1.0
 
 version = 1
 
-# Files that cannot have embedded headers
+[[annotations]]
+path = ["**.blade.php"]
+SPDX-FileCopyrightText = "(C) 2024-2026 Temple University <kleinweb@temple.edu>"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
 [[annotations]]
 path = [
   "**.json",
   "**.lock",
   "**.properties",
+  "**.yml",
   "**.d.ts",
   "**/.ignore",
-  "**/.rgignore",
-  ".rgignore",
   "**/.gitattributes",
   "**/.gitignore",
   "**/.gitkeep",
   ".config/org_id",
-  "pnpm-lock.yaml",
 ]
-SPDX-FileCopyrightText = "(C) 2025-2026 Temple University <kleinweb@temple.edu>"
+SPDX-FileCopyrightText = "(C) 2024-2026 Temple University <kleinweb@temple.edu>"
 SPDX-License-Identifier = "CC0-1.0"
 
-# Build artifacts (generated, binary-like)
 [[annotations]]
-path = ["public/build/**"]
-SPDX-FileCopyrightText = "(C) 2025-2026 Temple University <kleinweb@temple.edu>"
-SPDX-License-Identifier = "GPL-2.0-or-later"
+path = ["**.md", "**.org", "**.txt"]
+SPDX-FileCopyrightText = "(C) 2024-2026 Temple University <kleinweb@temple.edu>"
+SPDX-License-Identifier = "CC-BY-NC-SA-4.0"

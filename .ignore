@@ -1,7 +1,6 @@
-*.cache
-*.local
-.config/x509/keys
-.data
 .git
+.data
 node_modules
 vendor
+*.cache
+*.local

@@ -1,23 +1,19 @@
-# SPDX-FileCopyrightText: 2025-2026 Temple University <kleinweb@temple.edu>
-#
-# SPDX-License-Identifier: CC0-1.0
-
 ---
 ### <https://github.com/shivammathur/setup-php>
 ### <https://github.com/shivammathur/setup-php/blob/baf9535ba58ae8ac3a7362d932ca85fc38621a5d/examples/bedrock.yml>
 
 name: Build + Check
 
-"on":
+'on':
   pull_request:
 
   push:
     branches:
       - main
-      - "ci/**"
+      - 'ci/**'
     paths:
       # Always run when changing the workflow definition itself
-      - ".github/workflows/build-check.yml"
+      - '.github/workflows/build-check.yml'
 
   # Allow manual trigger
   workflow_dispatch:
@@ -28,7 +24,7 @@ name: Build + Check
 
 concurrency:
   # yamllint disable-line rule:line-length
-  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}"
+  group: '${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}'
   cancel-in-progress: true
 
 defaults:
@@ -37,7 +33,7 @@ defaults:
 
 env:
   PRJ_ROOT: ${{ github.workspace }}
-  PRJ_CONFIG_HOME: "${{ github.workspace }}/.config"
+  PRJ_CONFIG_HOME: '${{ github.workspace }}/.config'
 
 jobs:
   build-check:
@@ -72,7 +68,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: ${{ github.head_ref }}
-          # Ensure GITHUB_TOKEN is not persisted in repo config
+          # Make sure the value of GITHUB_TOKEN will not be persisted in repo's config
           persist-credentials: false
 
       - uses: ./.github/actions/setup-nix

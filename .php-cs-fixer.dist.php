@@ -17,9 +17,12 @@ return $config
         '@Symfony' => true,
         '@PER-CS' => true,
         'function_declaration' => ['closure_fn_spacing' => 'one'],
-        'increment_style' => ['style' => 'post'],
         'global_namespace_import' => true,
-        'multiline_whitespace_before_semicolons' => true,
+        'increment_style' => ['style' => 'post'],
+        'multiline_whitespace_before_semicolons' => [
+            'strategy' => 'new_line_for_chained_calls',
+        ],
+        'phpdoc_summary' => false,
         'yoda_style' => [
             'equal' => false,
             'identical' => false,
@@ -32,6 +35,8 @@ return $config
             ])
             ->ignoreDotFiles(false)
             ->exclude([
+                'build',
+                'dist',
                 'node_modules',
                 'vendor',
             ])

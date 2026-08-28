@@ -5,9 +5,9 @@
 # yamllint disable-line rule:line-length
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 ---
-name: "Deploy to Production"
+name: 'Deploy to Production'
 
-"on":
+'on':
   push:
     branches:
       - production
@@ -24,7 +24,7 @@ env:
   SRC_DIR: ${{ github.workspace }}
   # FIXME: make reusable
   PRJ_ROOT: ${{ github.workspace }}
-  PRJ_CONFIG_HOME: "${{ github.workspace }}/.config"
+  PRJ_CONFIG_HOME: '${{ github.workspace }}/.config'
 
 jobs:
   build:

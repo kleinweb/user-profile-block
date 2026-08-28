@@ -1,10 +1,9 @@
 # SPDX-FileCopyrightText: (C) 2022-2026 Temple University <kleinweb@temple.edu>
-# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-License-Identifier: GPL-3.0-or-later
 
-prj-root := env("PRJ_ROOT")
-owner-attr := "Temple University <kleinweb@temple.edu>"
+import 'common.vars.just'
 
-gpl3 := 'GPL-2.0-or-later'
+gpl3 := 'GPL-3.0-or-later'
 mit := 'MIT'
 and := ' AND '
 
@@ -16,7 +15,6 @@ lint:
 [private]
 annotate license +ARGS:
   reuse annotate \
-    --template compact \
     --copyright-prefix spdx-c \
     --license '{{license}}' \
     --copyright '{{owner-attr}}' \
@@ -35,7 +33,7 @@ docs:
   fd --glob '**/*.{md,mdx,markdown,org}' -X \
     just commons {}
 
-[doc: "License the specified files as GPL-2.0-or-later"]
+[doc: "License the specified files as GPL-3.0-or-later"]
 gpl +FILES: (annotate gpl3 FILES)
 
 [doc: "Add a co-licensor to the specified files"]

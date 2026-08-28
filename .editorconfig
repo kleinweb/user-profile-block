@@ -22,8 +22,13 @@ trim_trailing_whitespace = false
 
 [*.{bash,sh}]
 binary_next_line = true
+indent_size = 4
 simplify = true
 switch_case_indent = true
+
+[{justfile,*.just}]
+indent_size = 4
+indent_style = space
 
 [*.{php,xml}]
 indent_size = 4

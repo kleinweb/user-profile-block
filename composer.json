@@ -1,19 +1,15 @@
 {
+  "$schema": "https://getcomposer.org/schema.json",
   "name": "kleinweb/user-profile-block",
   "type": "wordpress-plugin",
-  "license": "GPL-2.0-or-later",
+  "license": "GPL-3.0-or-later",
   "description": "A WordPress Gutenberg block that displays user profile cards with social media links",
   "homepage": "https://github.com/kleinweb/user-profile-block",
   "authors": [
     {
       "name": "Chris Montgomery",
       "email": "chrismont@temple.edu",
-      "homepage": "https://github.com/montchr"
-    },
-    {
-      "name": "Bella Pezzati",
-      "email": "bella@temple.edu",
-      "homepage": "https://github.com/bpizzle"
+      "homepage": "https://github.com/astratagem"
     }
   ],
   "support": {
@@ -21,9 +17,9 @@
   },
   "repositories": [
     {
+      "name": "wp-packages",
       "type": "composer",
-      "url": "https://wpackagist.org",
-      "only": ["wpackagist-plugin/*", "wpackagist-theme/*"]
+      "url": "https://repo.wp-packages.org"
     }
   ],
   "require": {
@@ -36,31 +32,28 @@
     "codeception/codeception": "^5.0",
     "codeception/module-asserts": "^3.0",
     "codeception/module-db": "^3.0",
-    "friendsofphp/php-cs-fixer": "^3.59",
-    "kleinweb/php-coding-standards": "^0.6.0",
     "lucatume/wp-browser": "^4.0",
-    "phpstan/extension-installer": "^1.3",
-    "phpstan/phpstan": "^2.1.30",
-    "phpstan/phpstan-deprecation-rules": "^2.0",
     "phpunit/phpunit": "^10.5",
-    "roave/security-advisories": "dev-latest",
-    "slevomat/coding-standard": "~8.0",
+    "friendsofphp/php-cs-fixer": "^3",
+    "kleinweb/php-coding-standards": "^0.8.0",
+    "php-parallel-lint/php-parallel-lint": "*",
+    "php-stubs/acf-pro-stubs": "^6",
+    "php-stubs/gravity-forms-stubs": "^2",
+    "phpstan/extension-installer": "^1",
+    "phpstan/phpstan": "^2",
+    "phpstan/phpstan-deprecation-rules": "^2",
+    "phpstan/phpstan-webmozart-assert": "^2",
+    "slevomat/coding-standard": "^8.15",
     "squizlabs/php_codesniffer": "^3.7.1",
-    "szepeviktor/phpstan-wordpress": "^2.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Kleinweb\\UserProfile\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Kleinweb\\UserProfile\\Tests\\": "tests/"
-    }
+    "swissspidy/phpstan-no-private": "^1",
+    "szepeviktor/phpstan-wordpress": "^2",
+    "wp-plugin/debug-bar-constants": "*",
+    "wp-plugin/debug-bar-post-types": "*",
+    "wp-plugin/debug-bar-taxonomies": "*"
   },
   "config": {
     "allow-plugins": {
-      "alleyinteractive/composer-wordpress-autoloader": false,
+      "alleyinteractive/composer-wordpress-autoloader": true,
       "composer/installers": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
       "phpstan/extension-installer": true
@@ -73,14 +66,32 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Kleinweb\\UserProfile\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kleinweb\\UserProfile\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "installer-paths": {
+      "wp-content/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
+      "wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
+      "wp-content/themes/{$name}/": ["type:wordpress-theme"]
+    }
+  },
   "scripts": {
+    "check-syntax": "parallel-lint --show-deprecated --exclude .git --exclude .cache --exclude .data --exclude .direnv --exclude node_modules --exclude vendor",
     "php-cs-fixer": "php-cs-fixer",
-    "phpstan": "phpstan analyse --memory-limit 2G",
     "phpcbf": "phpcbf --extensions=php --standard=$PRJ_ROOT/.phpcs.xml.dist",
     "phpcs": "phpcs --extensions=php --standard=$PRJ_ROOT/.phpcs.xml.dist",
-    "lint": ["@phpcs", "@phpstan"],
+    "phpstan": "phpstan analyse --memory-limit 2G",
+    "check": ["@check-syntax", "@php-cs-fixer check", "@phpcs", "@phpstan"],
+    "lint": ["@check-syntax", "@phpcs", "@phpstan"],
     "fix": ["@php-cs-fixer fix", "@phpcbf"],
-    "check": ["@lint", "@test"],
     "test:unit": "phpunit --testsuite=unit",
     "test:integration": "codecept run wpunit",
     "test": ["@test:unit", "@test:integration"],

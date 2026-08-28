@@ -30,7 +30,7 @@
 
 # Data/logs/testing
 .data
-*.log
+*.log*
 *.sql
 /test-results/
 /playwright-report/
@@ -43,6 +43,7 @@ auth.json
 !.env.example
 .ssh
 *.key
+*.pem
 
 # Dependencies
 node_modules
@@ -52,9 +53,10 @@ vendor
 *.cache
 *.local
 *.local.*
-*.local.*
 !*.local*.example
 .direnv
+.idea
+.php-cs-fixer.cache
 .pre-commit-config.yaml
 
 # Plugin: Query Monitor
@@ -62,6 +64,7 @@ vendor
 /wp-content/db.php
 
 # Build artifacts
+.turbo
 hot
 result
 

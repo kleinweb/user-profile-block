@@ -1,15 +1,11 @@
-# SPDX-FileCopyrightText: 2025-2026 Temple University <kleinweb@temple.edu>
-#
-# SPDX-License-Identifier: CC0-1.0
-
 # yaml-language-server: $schema=https://json.schemastore.org/github-action.json
 ---
 name: Build
-description: "Build the things"
+description: 'Build the things'
 
 inputs:
   prj_root:
-    description: "Compatibility with the $PRJ_ROOT environment variable."
+    description: 'Compatibility with the $PRJ_ROOT environment variable.'
     default: ${{ github.workspace }}
 
 runs:

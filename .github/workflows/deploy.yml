@@ -1,15 +1,10 @@
-# SPDX-FileCopyrightText: 2025-2026 Temple University <kleinweb@temple.edu>
-#
-# SPDX-License-Identifier: CC0-1.0
-
-# yamllint disable-line rule:line-length
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
 # <https://github.com/marketplace/actions/install-ssh-key>
 ---
-name: "Deploy"
+name: 'Deploy'
 
-"on":
+'on':
   # push:
   #   # FIXME: this is not really what we want
   #   branches:
@@ -23,13 +18,12 @@ concurrency:
 env:
   SRC_DIR: ${{ github.workspace }}
   REMOTE_LOGIN: user-profile-block
-  REMOTE_HOST: "35.236.219.140"
+  REMOTE_HOST: '35.236.219.140'
   REMOTE_PORT: 49032
   REMOTE_DIR: public
   # FIXME: make reusable
   PRJ_ROOT: ${{ github.workspace }}
-  PRJ_CONFIG_HOME: "${{ github.workspace }}/.config"
-
+  PRJ_CONFIG_HOME: '${{ github.workspace }}/.config'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -72,19 +66,16 @@ jobs:
               User ${{ env.REMOTE_LOGIN }}
               Port ${{ env.REMOTE_PORT }}
 
-      # yamllint disable rule:line-length
       - name: Prepare target environment as Git remote
         run: |
           git remote add production ssh://production-target/private/user-profile-block.git
           git fetch production
-      # yamllint enable rule:line-length
+
       - name: Sync Composer vendor directory to remote
-        # yamllint disable-line rule:line-length
         run: rsync -av --delete ./vendor/ production-target:private/user-profile-block.git/vendor/
 
       - name: Replace .gitignore with .deployignore
         run: mv .deployignore .gitignore
-
       - name: Commit built changes
         run: |
           git checkout -b '${{ github.ref }}-built'

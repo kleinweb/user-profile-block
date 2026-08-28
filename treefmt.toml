@@ -1,5 +1,5 @@
 # SPDX-FileCopyrightText: (C) 2025-2026 Temple University <kleinweb@temple.edu>
-# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 [global]
 excludes = [
@@ -7,6 +7,9 @@ excludes = [
   "**/vendor/**",
   "**/*.min.*",
   "pnpm-lock.yaml",
+  "**/AGENTS.md",
+  "**/CHANGELOG.md",
+  "**/CLAUDE.md",
 ]
 
 [formatter.biome]
@@ -71,7 +74,7 @@ excludes = []
 command = "prettier"
 options = ["--write"]
 includes = ["*.md", "*.mdx", "*.scss", "*.yaml", "*.yml"]
-excludes = ["CHANGELOG.md", ".ddev/**", "private/migrate/README.md"]
+excludes = ["CHANGELOG.md", ".ddev/**"]
 
 [formatter.taplo]
 command = "taplo"
