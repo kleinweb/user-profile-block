@@ -26,8 +26,8 @@ final readonly class Meta
      * @param bool                           $showInEditor     Whether to show in block editor sidebar
      * @param string|null                    $inputType        UI input type: text, textarea, number, checkbox, select, date, etc
      * @param array<string, string>|null     $options          Options for select inputs
-     * @param string|null                    $sanitizeCallback Custom sanitization callback
-     * @param string|null                    $authCallback     Custom authorization callback
+     * @param callable-string|null           $sanitizeCallback Custom sanitization callback
+     * @param callable-string|null           $authCallback     Custom authorization callback
      */
     public function __construct(
         public string $key,
@@ -47,7 +47,16 @@ final readonly class Meta
     ) {}
 
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *     type: string,
+     *     description: string,
+     *     single: bool,
+     *     default: mixed,
+     *     show_in_rest: array{schema: array<string, mixed>}|false,
+     *     object_subtype?: string,
+     *     sanitize_callback?: callable-string,
+     *     auth_callback?: callable-string,
+     * }
      */
     public function toArgs(): array
     {

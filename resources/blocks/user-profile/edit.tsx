@@ -14,7 +14,7 @@ import {useSelect} from '@wordpress/data'
 import {__} from '@wordpress/i18n'
 import {UserCard} from './components/UserCard'
 
-interface Attributes {
+type Attributes = {
   selectedUserIds: number[]
   usePostAuthor: boolean
   linkToAuthorPage: boolean | null

@@ -90,7 +90,7 @@
     "phpcs": "phpcs --extensions=php --standard=$PRJ_ROOT/.phpcs.xml.dist",
     "phpstan": "phpstan analyse --memory-limit 2G",
     "check": ["@check-syntax .", "@php-cs-fixer check", "@phpcs", "@phpstan"],
-    "lint": ["@check-syntax", "@phpcs", "@phpstan"],
+    "lint": ["@check-syntax .", "@phpcs", "@phpstan"],
     "fix": ["@php-cs-fixer fix", "@phpcbf"],
     "test:unit": "phpunit --testsuite=unit",
     "test:integration": "codecept run wpunit",
