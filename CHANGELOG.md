@@ -10,6 +10,21 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 - - -
+## [2.0.1](https://github.com/kleinweb/user-profile-block/compare/ca2d6acc3ed5adb28151ba589267b2e62ad4e398..2.0.1) - 2026-09-02
+#### Bug Fixes
+- (**deps**) remove unnecessary kleinweb/lib dependency - ([ca2d6ac](https://github.com/kleinweb/user-profile-block/commit/ca2d6acc3ed5adb28151ba589267b2e62ad4e398)) - chris montgomery
+- (**dev**) php `parallel-lint` expects a path - ([5ae76ab](https://github.com/kleinweb/user-profile-block/commit/5ae76abbc7747b74d28969398a39ef17e02f9a66)) - chris montgomery
+- (**release**) no spaces in cog hooks - ([9ee7500](https://github.com/kleinweb/user-profile-block/commit/9ee7500c5f6cf2ea4af07d2b2c2a76171116c633)) - chris montgomery
+- type issues - ([b567dd5](https://github.com/kleinweb/user-profile-block/commit/b567dd5e433140bc1b033943dfe5be3adff23a83)) - chris montgomery
+- provide a nearly-useless `.env.example` for justfile - ([fc93926](https://github.com/kleinweb/user-profile-block/commit/fc93926766b806f6d119f78ccf93f1208440490f)) - chris montgomery
+#### Miscellaneous Chores
+- (**deps**) pnpm update - ([8c38f8c](https://github.com/kleinweb/user-profile-block/commit/8c38f8c4d4461227e9a6b33d5e2459216b6277e7)) - chris montgomery
+- biome migrate - ([4568d87](https://github.com/kleinweb/user-profile-block/commit/4568d874be8299372611f4f0fa2ff39f67ffb56b)) - chris montgomery
+- fmt - ([588c68b](https://github.com/kleinweb/user-profile-block/commit/588c68b4e52a38fbb345386ae93ce6963fd29e93)) - chris montgomery
+- update from project template - ([8a208b8](https://github.com/kleinweb/user-profile-block/commit/8a208b8139b36b5e4fd6ddcfda1f01cee63113b6)) - chris montgomery
+
+- - -
+
 ## [2.0.0](https://github.com/kleinweb/user-profile-block/compare/4e79f411c4608faea6931feef5b7e2d1791fe81b..2.0.0) - 2026-01-13
 #### Features
 - ![BREAKING](https://img.shields.io/badge/BREAKING-red) require kleinweb/lib@1.0.0 - ([4e79f41](https://github.com/kleinweb/user-profile-block/commit/4e79f411c4608faea6931feef5b7e2d1791fe81b)) - chris montgomery
