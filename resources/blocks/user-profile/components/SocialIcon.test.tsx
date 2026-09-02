@@ -11,9 +11,9 @@ describe('SocialIcon', () => {
     render(
       <SocialIcon
         platform="linkedin_url"
-        url="https://linkedin.com/in/testuser"
         showLabel={false}
         size="medium"
+        url="https://linkedin.com/in/testuser"
       />,
     )
 
@@ -25,9 +25,9 @@ describe('SocialIcon', () => {
     render(
       <SocialIcon
         platform="instagram_url"
-        url="https://instagram.com/testuser"
         showLabel={false}
         size="medium"
+        url="https://instagram.com/testuser"
       />,
     )
 
@@ -40,9 +40,9 @@ describe('SocialIcon', () => {
     render(
       <SocialIcon
         platform="twitter_url"
-        url="https://x.com/testuser"
         showLabel={false}
         size="medium"
+        url="https://x.com/testuser"
       />,
     )
 
@@ -54,9 +54,9 @@ describe('SocialIcon', () => {
     render(
       <SocialIcon
         platform="facebook_url"
-        url="https://facebook.com/testuser"
         showLabel={false}
         size="medium"
+        url="https://facebook.com/testuser"
       />,
     )
 
@@ -70,9 +70,9 @@ describe('SocialIcon', () => {
     render(
       <SocialIcon
         platform="youtube_url"
-        url="https://youtube.com/testuser"
         showLabel={true}
         size="medium"
+        url="https://youtube.com/testuser"
       />,
     )
 
@@ -83,9 +83,9 @@ describe('SocialIcon', () => {
     render(
       <SocialIcon
         platform="youtube_url"
-        url="https://youtube.com/testuser"
         showLabel={false}
         size="medium"
+        url="https://youtube.com/testuser"
       />,
     )
 
@@ -96,9 +96,9 @@ describe('SocialIcon', () => {
     const {rerender} = render(
       <SocialIcon
         platform="tiktok_url"
-        url="https://tiktok.com/@testuser"
         showLabel={false}
         size="small"
+        url="https://tiktok.com/@testuser"
       />,
     )
 
@@ -109,9 +109,9 @@ describe('SocialIcon', () => {
     rerender(
       <SocialIcon
         platform="tiktok_url"
-        url="https://tiktok.com/@testuser"
         showLabel={false}
         size="large"
+        url="https://tiktok.com/@testuser"
       />,
     )
 
@@ -125,9 +125,9 @@ describe('SocialIcon', () => {
       <SocialIcon
         // @ts-expect-error - testing unsupported platform
         platform="unsupported_url"
-        url="https://example.com"
         showLabel={false}
         size="medium"
+        url="https://example.com"
       />,
     )
 
@@ -149,9 +149,9 @@ describe('SocialIcon', () => {
     render(
       <SocialIcon
         platform={platform}
-        url="https://example.com"
         showLabel={true}
         size="medium"
+        url="https://example.com"
       />,
     )
 

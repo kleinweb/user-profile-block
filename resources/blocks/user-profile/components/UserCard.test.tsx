@@ -29,7 +29,7 @@ describe('UserCard', () => {
   })
 
   it('renders author name as link when linkToAuthorPage is true', () => {
-    render(<UserCard user={createMockUser()} linkToAuthorPage={true} />)
+    render(<UserCard linkToAuthorPage={true} user={createMockUser()} />)
 
     const heading = screen.getByRole('heading', {name: /Test User/})
     const link = heading.querySelector('a')
@@ -38,7 +38,7 @@ describe('UserCard', () => {
   })
 
   it('renders author name as plain text when linkToAuthorPage is false', () => {
-    render(<UserCard user={createMockUser()} linkToAuthorPage={false} />)
+    render(<UserCard linkToAuthorPage={false} user={createMockUser()} />)
 
     const heading = screen.getByRole('heading', {name: /Test User/})
     const link = heading.querySelector('a')
@@ -70,7 +70,7 @@ describe('UserCard', () => {
   })
 
   it('renders multiple social links', () => {
-    render(<UserCard user={createMockUser()} linkToAuthorPage={false} />)
+    render(<UserCard linkToAuthorPage={false} user={createMockUser()} />)
 
     const links = screen.getAllByRole('link')
     expect(links).toHaveLength(2)
@@ -100,6 +100,7 @@ describe('UserCard', () => {
   it('only renders links for platforms with URLs', () => {
     render(
       <UserCard
+        linkToAuthorPage={false}
         user={createMockUser({
           meta: {
             linkedin_url: 'https://linkedin.com/in/testuser',
@@ -107,7 +108,6 @@ describe('UserCard', () => {
             facebook_url: '',
           },
         })}
-        linkToAuthorPage={false}
       />,
     )
 

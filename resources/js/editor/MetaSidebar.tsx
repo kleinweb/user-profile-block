@@ -40,14 +40,14 @@ export function MetaSidebar({config}: MetaSidebarProps) {
         title={__('Plugin Name', 'plugin-name')}
       >
         <PanelBody
-          title={__('Custom Fields', 'plugin-name')}
           initialOpen={true}
+          title={__('Custom Fields', 'plugin-name')}
         >
           {Object.entries(fields).map(([key, fieldConfig]) => (
             <MetaField
+              config={fieldConfig as MetaFieldConfig}
               key={key}
               metaKey={key}
-              config={fieldConfig as MetaFieldConfig}
             />
           ))}
         </PanelBody>

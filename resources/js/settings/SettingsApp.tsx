@@ -119,9 +119,9 @@ export function SettingsApp({schema}: SettingsAppProps) {
 
       {notice && (
         <Notice
-          status={notice.type}
           isDismissible
           onRemove={() => setNotice(null)}
+          status={notice.type}
         >
           {notice.message}
         </Notice>
@@ -135,11 +135,11 @@ export function SettingsApp({schema}: SettingsAppProps) {
           <CardBody>
             {Object.entries(section.fields).map(([fieldKey, field]) => (
               <SettingsField
-                key={fieldKey}
-                fieldKey={fieldKey}
                 config={field}
-                value={settings[fieldKey] ?? field.default}
+                fieldKey={fieldKey}
+                key={fieldKey}
                 onChange={value => updateSetting(fieldKey, value)}
+                value={settings[fieldKey] ?? field.default}
               />
             ))}
           </CardBody>
@@ -147,10 +147,10 @@ export function SettingsApp({schema}: SettingsAppProps) {
       ))}
 
       <Button
-        variant="primary"
-        onClick={saveSettings}
-        isBusy={isSaving}
         disabled={isSaving}
+        isBusy={isSaving}
+        onClick={saveSettings}
+        variant="primary"
       >
         {isSaving
           ? __('Saving...', 'plugin-name')
@@ -181,9 +181,9 @@ function SettingsField({
     case 'checkbox':
       return (
         <ToggleControl
-          label={label}
-          help={description}
           checked={Boolean(value)}
+          help={description}
+          label={label}
           onChange={onChange}
         />
       )
@@ -191,26 +191,26 @@ function SettingsField({
     case 'select':
       return (
         <SelectControl
-          label={label}
           help={description}
-          value={String(value)}
+          label={label}
+          onChange={onChange}
           options={Object.entries(options || {}).map(([val, lab]) => ({
             value: val,
             label: lab,
           }))}
-          onChange={onChange}
+          value={String(value)}
         />
       )
 
     case 'number':
       return (
         <NumberControl
-          label={label}
           help={description}
-          value={value as number}
-          min={min}
+          label={label}
           max={max}
+          min={min}
           onChange={val => onChange(Number(val))}
+          value={value as number}
         />
       )
 
@@ -218,44 +218,44 @@ function SettingsField({
     case 'textarea':
       return (
         <TextareaControl
-          label={label}
           help={description}
-          value={String(value)}
+          label={label}
           onChange={onChange}
           rows={inputType === 'code' ? 10 : 4}
           style={inputType === 'code' ? {fontFamily: 'monospace'} : undefined}
+          value={String(value)}
         />
       )
 
     case 'password':
       return (
         <TextControl
-          label={label}
           help={description}
-          value={String(value)}
-          type="password"
+          label={label}
           onChange={onChange}
+          type="password"
+          value={String(value)}
         />
       )
 
     case 'url':
       return (
         <TextControl
-          label={label}
           help={description}
-          value={String(value)}
-          type="url"
+          label={label}
           onChange={onChange}
+          type="url"
+          value={String(value)}
         />
       )
 
     default:
       return (
         <TextControl
-          label={label}
           help={description}
-          value={String(value)}
+          label={label}
           onChange={onChange}
+          value={String(value)}
         />
       )
   }

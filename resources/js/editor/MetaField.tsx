@@ -43,9 +43,9 @@ export function MetaField({metaKey, config}: MetaFieldProps) {
     case 'toggle':
       return (
         <ToggleControl
-          label={label}
-          help={description}
           checked={Boolean(value)}
+          help={description}
+          label={label}
           onChange={onChange}
         />
       )
@@ -53,34 +53,34 @@ export function MetaField({metaKey, config}: MetaFieldProps) {
     case 'select':
       return (
         <SelectControl
-          label={label}
           help={description}
-          value={String(value)}
+          label={label}
+          onChange={onChange}
           options={Object.entries(options || {}).map(([val, lab]) => ({
             value: val,
             label: lab,
           }))}
-          onChange={onChange}
+          value={String(value)}
         />
       )
 
     case 'number':
       return (
         <NumberControl
-          label={label}
           help={description}
-          value={value as number}
+          label={label}
           onChange={val => onChange(Number(val))}
+          value={value as number}
         />
       )
 
     case 'textarea':
       return (
         <TextareaControl
-          label={label}
           help={description}
-          value={String(value)}
+          label={label}
           onChange={onChange}
+          value={String(value)}
         />
       )
 
@@ -95,15 +95,6 @@ export function MetaField({metaKey, config}: MetaFieldProps) {
               {label}
             </div>
             <Dropdown
-              renderToggle={({isOpen, onToggle}) => (
-                <Button
-                  variant="secondary"
-                  onClick={onToggle}
-                  aria-expanded={isOpen}
-                >
-                  {value ? format('Y-m-d', value as string) : 'Select date'}
-                </Button>
-              )}
               renderContent={({onClose}) => (
                 <DatePicker
                   currentDate={value as string}
@@ -112,6 +103,15 @@ export function MetaField({metaKey, config}: MetaFieldProps) {
                     onClose()
                   }}
                 />
+              )}
+              renderToggle={({isOpen, onToggle}) => (
+                <Button
+                  aria-expanded={isOpen}
+                  onClick={onToggle}
+                  variant="secondary"
+                >
+                  {value ? format('Y-m-d', value as string) : 'Select date'}
+                </Button>
               )}
             />
           </label>
@@ -127,44 +127,44 @@ export function MetaField({metaKey, config}: MetaFieldProps) {
     case 'color':
       return (
         <TextControl
-          label={label}
           help={description}
-          value={String(value)}
+          label={label}
+          onChange={onChange}
           // @ts-expect-error - color input type not in TextControl types but works
           type="color"
-          onChange={onChange}
+          value={String(value)}
         />
       )
 
     case 'url':
       return (
         <TextControl
-          label={label}
           help={description}
-          value={String(value)}
-          type="url"
+          label={label}
           onChange={onChange}
+          type="url"
+          value={String(value)}
         />
       )
 
     case 'tel':
       return (
         <TextControl
-          label={label}
           help={description}
-          value={String(value)}
-          type="tel"
+          label={label}
           onChange={onChange}
+          type="tel"
+          value={String(value)}
         />
       )
 
     default:
       return (
         <TextControl
-          label={label}
           help={description}
-          value={String(value)}
+          label={label}
           onChange={onChange}
+          value={String(value)}
         />
       )
   }

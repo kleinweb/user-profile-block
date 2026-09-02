@@ -13,9 +13,9 @@ namespace Kleinweb\UserProfile\Support;
  */
 final class Vite
 {
-    private const MANIFEST_PATH = '/public/build/.vite/manifest.json';
-    private const BUILD_PATH = '/public/build/';
-    private const HOT_FILE = '/public/build/hot';
+    private const string MANIFEST_PATH = '/public/build/.vite/manifest.json';
+    private const string BUILD_PATH = '/public/build/';
+    private const string HOT_FILE = '/public/build/hot';
 
     /** @var array<string, array{file: string, css?: list<string>}>|null */
     private static ?array $manifest = null;

@@ -59,7 +59,7 @@ vi.mock('@wordpress/components', () => ({
     children: React.ReactNode
     onClick?: () => void
   }) => (
-    <button type="button" onClick={onClick}>
+    <button onClick={onClick} type="button">
       {children}
     </button>
   ),
@@ -85,9 +85,9 @@ vi.mock('@wordpress/components', () => ({
   }) => (
     <label>
       <input
-        type="checkbox"
         checked={checked}
         onChange={e => onChange(e.target.checked)}
+        type="checkbox"
       />
       {label}
     </label>
@@ -105,7 +105,7 @@ vi.mock('@wordpress/components', () => ({
   }) => (
     <label>
       {label}
-      <select value={value} onChange={e => onChange(e.target.value)}>
+      <select onChange={e => onChange(e.target.value)} value={value}>
         {options.map(opt => (
           <option key={opt.value} value={opt.value}>
             {opt.label}

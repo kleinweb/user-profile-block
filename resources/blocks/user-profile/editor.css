@@ -14,26 +14,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
   min-height: 24px;
+  padding: 2rem;
 }
 
 .wp-block-kleinweb-user-profile__empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
   min-height: 24px;
+  padding: 2rem;
+  text-align: center;
   background-color: #f0f0f0;
   border: 1px dashed #ccc;
   border-radius: 4px;
-  text-align: center;
 }
 
 .wp-block-kleinweb-user-profile__empty p {
   margin: 0;
-  color: #757575;
   font-size: 0.9rem;
+  color: #757575;
 }
 
 .wp-block-kleinweb-user-profile.is-selected {

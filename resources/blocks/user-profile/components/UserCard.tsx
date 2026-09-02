@@ -54,8 +54,8 @@ export function UserCard({user, linkToAuthorPage = true}: UserCardProps) {
       </h3>
 
       <nav
-        className="wp-block-kleinweb-user-profile__social"
         aria-label={`${__('Social links for', 'user-profile-block')} ${user.name}`}
+        className="wp-block-kleinweb-user-profile__social"
       >
         {socialLinks.map(({key, url}) => (
           <SocialIcon key={key} platform={key} url={url} />

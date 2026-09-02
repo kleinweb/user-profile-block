@@ -174,32 +174,32 @@ export function Edit({
       <InspectorControls>
         <PanelBody title={__('User Selection', 'user-profile-block')}>
           <ToggleControl
-            label={__('Show post author', 'user-profile-block')}
+            checked={usePostAuthor}
             help={__(
               'Display the current post author(s) automatically.',
               'user-profile-block',
             )}
-            checked={usePostAuthor}
+            label={__('Show post author', 'user-profile-block')}
             onChange={value => setAttributes({usePostAuthor: value})}
           />
 
           <ToggleControl
-            label={__('Link author name to profile', 'user-profile-block')}
+            checked={effectiveLinkToAuthorPage}
             help={__(
               'Make the author name a link to their profile page.',
               'user-profile-block',
             )}
-            checked={effectiveLinkToAuthorPage}
+            label={__('Link author name to profile', 'user-profile-block')}
             onChange={value => setAttributes({linkToAuthorPage: value})}
           />
 
           <FormTokenField
-            label={__('Additional users', 'user-profile-block')}
-            value={selectedUserNames}
-            suggestions={userOptions}
-            onChange={handleUserSelectionChange}
             __experimentalExpandOnFocus
             __experimentalShowHowTo={false}
+            label={__('Additional users', 'user-profile-block')}
+            onChange={handleUserSelectionChange}
+            suggestions={userOptions}
+            value={selectedUserNames}
           />
         </PanelBody>
       </InspectorControls>
@@ -222,8 +222,8 @@ export function Edit({
           displayUsers.map(user => (
             <UserCard
               key={user.id}
-              user={user}
               linkToAuthorPage={effectiveLinkToAuthorPage}
+              user={user}
             />
           ))
         )}

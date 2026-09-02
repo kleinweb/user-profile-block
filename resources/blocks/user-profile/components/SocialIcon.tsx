@@ -62,17 +62,17 @@ export function SocialIcon({platform, url, size = 'medium'}: SocialIconProps) {
 
   return (
     <a
-      href={url}
       className={`wp-block-kleinweb-user-profile__social-link wp-block-kleinweb-user-profile__social-link--${size}`}
-      target="_blank"
+      href={url}
       rel="noopener noreferrer"
+      target="_blank"
     >
       <span className="wp-block-kleinweb-user-profile__social-label screen-reader-text">
         {label}
       </span>
       <svg
-        role="img"
         aria-label={label}
+        role="img"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
